@@ -1,5 +1,18 @@
-*{
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+/* Font */
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Outfit", serif;
+}
+
+
+.error {
+  font-size: 12px;
+  color: red;
+  font-weight: 300;
+  margin-top: 8px;
 }

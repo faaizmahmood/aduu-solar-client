@@ -1,0 +1,97 @@
+.login {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+
+    .loginWrapper {
+
+        width: 500px;
+        height: 400px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: transparent;
+        background-image: radial-gradient(at top left, #FFCD06 0%, #1763A3 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .logo {
+            width: 40%;
+            margin: 0px auto;
+        }
+
+        .input_group {
+            width: 100%;
+            margin: 15px 0px;
+
+            label {
+                color: #373737;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 26px;
+            }
+
+            input {
+                background-color: #F0F0F0;
+                width: 100% !important;
+                padding: 10px;
+                outline: none;
+                border: none;
+                font-size: 16px;
+                color: #373737;
+                border-radius: 5px;
+            }
+
+            .passwordWrapper {
+                position: relative;
+                width: 100%;
+
+                input {
+                    background-color: #F0F0F0;
+                    width: 100% !important;
+                    padding: 10px;
+                    outline: none;
+                    border: none;
+                    font-size: 16px;
+                    color: #373737;
+                    border-radius: 5px;
+                }
+
+                .eyeIcon {
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    font-size: 18px;
+                    color: #373737;
+                }
+            }
+        }
+
+        .form_submit {
+
+            button {
+                width: 100%;
+                padding: 10px 0px;
+                border: none;
+                outline: none;
+                margin-top: 5px;
+                border-radius: 5px;
+                font-weight: 600;
+                background-color: #FFCD06;
+                color: white;
+                transition: all 0.6s;
+
+                &:hover {
+                    background-color: #1E4063;
+                    color: white;
+                }
+            }
+        }
+    }
+}
