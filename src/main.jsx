@@ -5,6 +5,10 @@ import { BrowserRouter } from 'react-router-dom'
 
 // Bootstrap Style File
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+// React Pro Sidebar Styles
+
+
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
 

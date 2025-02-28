@@ -1,6 +1,6 @@
 import styles from './dashboard.module.scss'
 
-const Dashboard = () => {
+const AdminDashboard = () => {
     return (
         <>
 
@@ -12,4 +12,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default AdminDashboard

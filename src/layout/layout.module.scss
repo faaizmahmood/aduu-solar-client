@@ -1,0 +1,138 @@
+.appLayout {
+    position: relative;
+
+    /* Sidebar Header */
+    h4 {
+        font-size: 18px !important;
+        margin-top: 8px;
+        color: white;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: var(--primary-color);
+        }
+    }
+
+
+    .menuSection {
+
+        color: rgb(94, 94, 94);
+        font-size: 12px;
+        margin-left: 25px;
+        margin-top: 15px;
+        margin-bottom: 10px;
+
+
+        @media (max-width:768px) {
+            & {
+                margin-left: 10px !important;
+                font-size: 10px;
+            }
+        }
+    }
+
+    .divider {
+
+        border-bottom: 1px solid rgb(94, 94, 94);
+        margin: 15px 25px;
+
+        @media (max-width:768px) {
+            & {
+                margin: 0px !important;
+            }
+        }
+
+    }
+
+    /* Sidebar Menu Items */
+    .MenuItem {
+        color: white;
+        font-size: 13px;
+        font-weight: 500;
+        // padding: 10px 15px;
+        transition: all 0.3s ease;
+        margin-top: -10px;
+
+        /* Change icon color */
+        i {
+            color: rgb(207, 207, 207);
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        &:hover {
+            color: var(--primary-color);
+
+            i {
+                color: var(--secondary-color);
+            }
+        }
+    }
+
+    /* SubMenu Styling */
+    .subMenuItem {
+        background-color: #F3F3F3;
+        color: #373737;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 8px 15px;
+        transition: background 0.3s ease;
+
+        &:hover {
+            // background-color: var(--primary-color);
+            color: white;
+        }
+    }
+
+    /* Mobile Sidebar */
+    .mobileMenuButton {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: none;
+        border: none;
+        color: rgb(255, 255, 255);
+        background-color: var(--secondary-color);
+        padding: 5px 13px 5px 13px;
+        margin: 0px !important;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 1000;
+        /* Ensure it stays above other elements */
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    .mobileSidebar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100vh;
+        z-index: 999;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+        background-color: #1763A3;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .MenuItem {
+            font-size: 16px;
+            margin-top: 10px;
+            padding: 0px !important;
+        }
+
+        .mobileSidebar {
+            transform: translateX(-100%);
+        }
+
+        .mobileSidebar.active {
+            transform: translateX(0);
+        }
+    }
+}

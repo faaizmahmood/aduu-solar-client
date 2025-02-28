@@ -38,6 +38,7 @@ const useSignup = () => {
 
                 toast.success('Signup Successful!');
                 console.log('Signup Successful:', response.data);
+                location.reload()
             } catch (error) {
                 console.error('Signup Error:', error.response?.data || error.message);
                 toast.error(error.response?.data?.message || 'Signup Failed');

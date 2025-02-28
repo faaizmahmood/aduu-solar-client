@@ -1,15 +1,17 @@
 import styles from './dashboard.module.scss'
 
-const Dashboard = () => {
+const UserDashboard = () => {
     return (
         <>
 
             <section className={`${styles.dashboard}`}>
+                
                 User Dashboard
+
             </section>
 
         </>
     )
 }
 
-export default Dashboard
+export default UserDashboard

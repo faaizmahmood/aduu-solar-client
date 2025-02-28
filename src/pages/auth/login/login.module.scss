@@ -14,7 +14,7 @@
         padding: 20px;
         border-radius: 10px;
         background-color: transparent;
-        background-image: radial-gradient(at top left, #FFCD06 0%, #1763A3 100%);
+        background-image: var( --gradient-bg);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -29,9 +29,9 @@
             margin: 15px 0px;
 
             label {
-                color: #373737;
+                color: #ffffff;
                 font-size: 16px;
-                font-weight: 600;
+                font-weight: 500;
                 line-height: 26px;
             }
 
@@ -77,20 +77,6 @@
 
             button {
                 width: 100%;
-                padding: 10px 0px;
-                border: none;
-                outline: none;
-                margin-top: 5px;
-                border-radius: 5px;
-                font-weight: 600;
-                background-color: #FFCD06;
-                color: white;
-                transition: all 0.6s;
-
-                &:hover {
-                    background-color: #1E4063;
-                    color: white;
-                }
             }
         }
     }

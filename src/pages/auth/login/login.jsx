@@ -54,7 +54,7 @@ const Login = () => {
                     </div>
 
                     <div className={`${styles.form_submit}`}>
-                        <button type='submit' disabled={!formik.isValid || formik.isSubmitting}>{loading ? <PulseLoader color="#ffffff" size={5} /> : "Sign In"}</button>
+                        <button type='submit' className='filled' disabled={!formik.isValid || formik.isSubmitting}>{loading ? <PulseLoader color="#ffffff" size={5} /> : "Sign In"}</button>
                     </div>
                 </form>
             </div>
