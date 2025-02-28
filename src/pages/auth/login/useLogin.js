@@ -24,7 +24,7 @@ const useLogin = () => {
         onSubmit: async (values) => {
             setLoading(true);
             try {
-                const response = await axios.post('http://localhost:5000/api/auth/signin', values);
+                const response = await axios.post('https://aduu-solar-00a9b4616138.herokuapp.com/api/auth/signin', values);
                 const { authToken } = response.data; // Assuming API returns { token: '...' }
 
                 // Store token in cookies (expires in 7 days)

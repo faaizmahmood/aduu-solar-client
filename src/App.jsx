@@ -25,7 +25,7 @@ function App() {
       const authToken = Cookies.get("authToken");
       if (!authToken) throw new Error("No auth token found");
 
-      const response = await axios.get("http://localhost:5000/api/user/profile", {
+      const response = await axios.get("https://aduu-solar-00a9b4616138.herokuapp.com/api/user/profile", {
         headers: { Authorization: `Bearer ${authToken}` },
       });
 

@@ -20,7 +20,7 @@ const useProjects = () => {
 
             const token = Cookies.get("authToken");
 
-            const response = await axios.get("http://localhost:5000/api/project/client-projects", {
+            const response = await axios.get("https://aduu-solar-00a9b4616138.herokuapp.com/api/project/client-projects", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -52,7 +52,7 @@ const useProjects = () => {
             const token = Cookies.get("authToken");
 
             const response = await axios.post(
-                "http://localhost:5000/api/project/create-project",
+                "https://aduu-solar-00a9b4616138.herokuapp.com/api/project/create-project",
                 values,
                 {
                     headers: {
