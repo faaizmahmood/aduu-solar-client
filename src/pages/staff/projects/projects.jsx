@@ -1,6 +1,6 @@
 import styles from './projects.module.scss'
 
-const Projects = () => {
+const StaffProjects = () => {
     return (
         <>
             <section className={`${styles.projects}`}>
@@ -10,4 +10,4 @@ const Projects = () => {
     )
 }
 
-export default Projects
+export default StaffProjects

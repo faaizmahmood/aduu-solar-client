@@ -3,7 +3,7 @@ import AppRoutes from '../routes/routes'
 const UnProtectedLayout = () => {
     return (
         <>
-            <main>
+            <main style={{ height: '100vh' }}>
                 <AppRoutes />
             </main>
         </>

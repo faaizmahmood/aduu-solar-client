@@ -8,9 +8,10 @@ import { useSelector } from "react-redux";
 const Login = lazy(() => import("../pages/auth/login/login.jsx"));
 const Signup = lazy(() => import("../pages/auth/signup/signup.jsx"));
 const Dashboard = lazy(() => import("../pages/sharedPages/dashboard/dashboard.jsx"));
-const AdminProjects = lazy(() => import("../pages/admin/projects/projects.jsx"));
-const StaffProjects = lazy(() => import("../pages/staff/projects/projects.jsx"));
-const UserProjects = lazy(() => import("../pages/user/projects/projects.jsx"));
+// const AdminProjects = lazy(() => import("../pages/admin/projects/projects.jsx"));
+// const StaffProjects = lazy(() => import("../pages/staff/projects/projects.jsx"));
+// const UserProjects = lazy(() => import("../pages/user/projects/projects.jsx"));
+const Projects = lazy(() => import("../pages/sharedPages/projects/projects.jsx"));
 const ProjectDetails = lazy(() => import("../pages/sharedPages/projectDetails/projectDetails.jsx"));
 const CreateProject = lazy(() => import("../pages/user/createProject/createProject.jsx"));
 const AssignProject = lazy(() => import("../pages/admin/assignProject/assignProject.jsx"));
@@ -54,9 +55,10 @@ const AppRoutes = () => {
                         <Route path="/" element={<ProtectedRoute element={<Dashboard />} allowedRoles={["admin", "staff", "client"]} />} />
 
                         {/* Role-Based Routes */}
-                        <Route path="/admin-projects" element={<ProtectedRoute element={<AdminProjects />} allowedRoles={["admin"]} />} />
+                        {/* <Route path="/admin-projects" element={<ProtectedRoute element={<AdminProjects />} allowedRoles={["admin"]} />} />
                         <Route path="/staff-projects" element={<ProtectedRoute element={<StaffProjects />} allowedRoles={["staff"]} />} />
-                        <Route path="/user-projects" element={<ProtectedRoute element={<UserProjects />} allowedRoles={["client"]} />} />
+                        <Route path="/user-projects" element={<ProtectedRoute element={<UserProjects />} allowedRoles={["client"]} />} /> */}
+                        <Route path="/projects" element={<ProtectedRoute element={<Projects />} allowedRoles={["client", "staff", "admin"]} />} />
 
                         <Route path="/project-details/:id" element={<ProtectedRoute element={<ProjectDetails />} allowedRoles={["admin", "staff", "client"]} />} />
 

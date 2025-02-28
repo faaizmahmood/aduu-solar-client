@@ -63,18 +63,16 @@ const ProtectedLayout = () => {
 
                     {/* Project Management Section */}
                     <div className={styles.menuSection}>Projects</div>
-                    {userRole === "admin" && (
-                        <MenuItem icon={<i className="fa-regular fa-folders"></i>} className={styles.MenuItem} onClick={() => navigate("/admin-projects")}>Admin Projects</MenuItem>
-                    )}
-                    {userRole === "staff" && (
-                        <MenuItem icon={<i className="fa-regular fa-folders"></i>} className={styles.MenuItem} onClick={() => navigate("/staff-projects")}>Staff Projects</MenuItem>
-                    )}
+
+                    <MenuItem icon={<i className="fa-regular fa-folders"></i>} className={styles.MenuItem} onClick={() => navigate("/projects")}>Projects</MenuItem>
+
+
                     {userRole === "client" && (
                         <>
-                            <MenuItem icon={<i className="fa-regular fa-folders"></i>} className={styles.MenuItem} onClick={() => navigate("/user-projects")}>My Projects</MenuItem>
                             <MenuItem icon={<i className="fa-regular fa-folder-plus"></i>} className={styles.MenuItem} onClick={() => navigate("/create-project")}>Create Project</MenuItem>
                         </>
                     )}
+
                     {userRole === "admin" && (
                         <MenuItem icon={<i className="fas fa-tasks"></i>} className={styles.MenuItem} onClick={() => navigate("/assign-project")}>Assign Project</MenuItem>
                     )}
@@ -105,7 +103,7 @@ const ProtectedLayout = () => {
                 </Menu>
             </Sidebar>
 
-            <main style={{ flexGrow: 1, padding: "20px" }}>
+            <main style={{ flexGrow: 1, padding: "20px", backgroundColor:'#F6F6F6', overflow:'scroll', scrollbarWidth:'none' }}>
                 <AppRoutes />
             </main>
         </div>

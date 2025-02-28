@@ -1,13 +1,14 @@
 import styles from './loading.module.scss'
 
-const loadin = () => {
+const Loading = () => {
     return (
         <>
             <section className={`${styles.loading}`}>
-                Loading...
+                {/* <h5>Loading...</h5> */}
+                <div className={`${styles.lds_spinner} mt-3`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             </section>
         </>
     )
 }
 
-export default loadin
+export default Loading

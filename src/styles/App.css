@@ -54,6 +54,30 @@ button.rounded {
 }
 
 
+button.simple-btn {
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-weight: 400;
+  background-color: var(--primary-color);
+  color: white;
+  transition: all 0.6s;
+}
+
+/* heading */
+
+
+h3 {
+  font-size: 22px !important;
+}
+
+
+h2 {
+  font-size: 24px !important;
+}
+
+
 /* error */
 
 .error {
@@ -61,4 +85,12 @@ button.rounded {
   color: red;
   font-weight: 300;
   margin-top: 8px;
+}
+
+
+/* progress bar */
+
+#nprogress .bar {
+  background: var(--primary-color) !important;
+  height: 4px !important;
 }

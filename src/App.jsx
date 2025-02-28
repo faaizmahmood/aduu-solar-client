@@ -1,24 +1,28 @@
 import { ToastContainer } from "react-toastify";
 import "./styles/App.css";
+import "nprogress/nprogress.css"; // Import NProgress styles
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, setError, setLoading } from "./redux/userSlice";
 import axios from "axios";
-import Cookies from "js-cookie"; // To read cookies
+import Cookies from "js-cookie";
 import ProtectedLayout from "./layout/protectedLayout";
 import UnProtectedLayout from "./layout/unProtectedLayout";
+import NProgress from "nprogress";
+import { motion } from 'framer-motion'
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user); // Prevent unnecessary API calls if user is already set
+  const user = useSelector((state) => state.user.user);
 
   const fetchUserProfile = useCallback(async () => {
     if (user) return;
 
     dispatch(setLoading(true));
+    NProgress.start(); // Start NProgress
+
     try {
       const authToken = Cookies.get("authToken");
-
       if (!authToken) throw new Error("No auth token found");
 
       const response = await axios.get("http://localhost:5000/api/user/profile", {
@@ -32,6 +36,7 @@ function App() {
       dispatch(setError(error.message));
     } finally {
       dispatch(setLoading(false));
+      NProgress.done(); // Stop NProgress
     }
   }, [dispatch, user]);
 
@@ -39,17 +44,21 @@ function App() {
     fetchUserProfile();
   }, [fetchUserProfile]);
 
-
   const authToken = Cookies.get("authToken");
   const isAuthenticated = Boolean(authToken);
 
   return (
     <>
 
-      {
-        isAuthenticated ? <ProtectedLayout /> : <UnProtectedLayout />
-      }
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.3 }}>
 
+        {isAuthenticated ? <ProtectedLayout /> : <UnProtectedLayout />}
+
+      </motion.main>
 
 
       <ToastContainer
