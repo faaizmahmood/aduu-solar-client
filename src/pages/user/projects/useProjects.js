@@ -62,13 +62,18 @@ const useProjects = () => {
                 }
             );
 
-            toast.success("Project Created!");
+            if (response.status >= 200 && response.status < 300) {
+                toast.success("Project Created!");
 
-            // Update state with the new project
-            setProjects([...projects, response.data]);
+                // Refresh projects list after successful creation
+                await fetchProjects();
 
-            resetForm();
-            closeModal();
+                resetForm();
+                closeModal();
+            } else {
+                throw new Error(response.data?.message || "Failed to create project");
+            }
+
         } catch (err) {
             console.error("Error creating project:", err);
             toast.error("Error creating project");
@@ -85,6 +90,10 @@ const useProjects = () => {
 
 
     const getStatusColor = (status) => {
+        if (!status || typeof status !== "string") {
+            return "gray"; // Default color for missing/invalid status
+        }
+
         switch (status.toLowerCase()) {
             case "completed":
                 return "green";
