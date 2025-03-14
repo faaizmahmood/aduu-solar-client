@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import NProgress from "nprogress";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useProjects = () => {
     const [projects, setProjects] = useState([]);
@@ -20,7 +21,7 @@ const useProjects = () => {
 
             const token = Cookies.get("authToken");
 
-            const response = await axios.get("https://aduu-solar-00a9b4616138.herokuapp.com/api/project/client-projects", {
+            const response = await axios.get(`${API_BASE_URL}/project/client-projects`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -52,7 +53,7 @@ const useProjects = () => {
             const token = Cookies.get("authToken");
 
             const response = await axios.post(
-                "https://aduu-solar-00a9b4616138.herokuapp.com/api/project/create-project",
+                `${API_BASE_URL}/project/create-project`,
                 values,
                 {
                     headers: {

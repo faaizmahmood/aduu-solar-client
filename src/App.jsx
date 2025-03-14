@@ -11,6 +11,8 @@ import UnProtectedLayout from "./layout/unProtectedLayout";
 import NProgress from "nprogress";
 import { motion } from 'framer-motion'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
@@ -25,7 +27,7 @@ function App() {
       const authToken = Cookies.get("authToken");
       if (!authToken) throw new Error("No auth token found");
 
-      const response = await axios.get("https://aduu-solar-00a9b4616138.herokuapp.com/api/user/profile", {
+      const response = await axios.get(`${API_BASE_URL}/user/profile`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
 

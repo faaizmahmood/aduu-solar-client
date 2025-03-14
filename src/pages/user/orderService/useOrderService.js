@@ -6,6 +6,7 @@ import NProgress from "nprogress";
 import { setProject } from "../../../redux/orderServiceSlice";
 import Cookies from "js-cookie";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useOrderService = () => {
 
@@ -18,7 +19,7 @@ const useOrderService = () => {
     const authToken = Cookies.get("authToken");
 
     const orderServiceState = useSelector(state => state.OrderServiceData);
-    
+
     const projectId = orderServiceState?.projectId || null;
 
     const project = location.state?.project || {};
@@ -95,7 +96,7 @@ const useOrderService = () => {
                 formData: orderServiceState?.formData || {},
             };
 
-            const response = await axios.post("http://localhost:5000/api/order/order-service", payload, {
+            const response = await axios.post(`${API_BASE_URL}/order/order-service`, payload, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                     "Content-Type": "application/json",

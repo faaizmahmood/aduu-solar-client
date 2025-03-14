@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useManageTeam = () => {
     const [showModal, setShowModal] = useState(false);
@@ -15,7 +16,7 @@ const useManageTeam = () => {
         const fetchStaff = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("http://localhost:5000/api/get/all-staff", {
+                const response = await axios.get(`${API_BASE_URL}/get/all-staff`, {
                     headers: { Authorization: `Bearer ${Cookies.get("authToken")}` }
                 });
 
@@ -54,7 +55,7 @@ const useManageTeam = () => {
         setLoading(true);
         try {
 
-            const response = await axios.post("http://localhost:5000/api/add/add-staff", newStaff, {
+            const response = await axios.post(`${API_BASE_URL}/add/add-staff`, newStaff, {
                 headers: { Authorization: `Bearer ${Cookies.get("authToken")}` }
             });
 

@@ -5,6 +5,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const useSignup = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +32,7 @@ const useSignup = () => {
         onSubmit: async (values) => {
             setLoading(true);
             try {
-                const response = await axios.post('https://aduu-solar-00a9b4616138.herokuapp.com/api/auth/signup', values);
+                const response = await axios.post(`${API_BASE_URL}/auth/signup`, values);
                 const { authToken } = response.data; // Assuming API returns { token: '...' }
 
                 // Store token in cookies (expires in 7 days)
