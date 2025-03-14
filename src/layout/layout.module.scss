@@ -1,16 +1,17 @@
 .appLayout {
     position: relative;
 
-    /* Sidebar Header */
-    h4 {
-        font-size: 18px !important;
-        margin-top: 8px;
-        color: white;
-        transition: color 0.3s ease;
+    .sidebar {
+        overflow: auto;
+        -ms-overflow-style: none;
+        /* Hide scrollbar in IE & Edge */
+        scrollbar-width: none !important;
+        /* Hide scrollbar in Firefox */
+    }
 
-        &:hover {
-            color: var(--primary-color);
-        }
+    .sidebar::-webkit-scrollbar {
+        display: none !important;
+        /* Hide scrollbar in Chrome, Safari, and Edge */
     }
 
 
@@ -21,6 +22,31 @@
         margin-left: 25px;
         margin-top: 15px;
         margin-bottom: 10px;
+
+
+        .menueCollapser {
+
+            /* Sidebar Header */
+
+            &:hover {
+                h4 {
+                    color: var(--primary-color);
+                }
+
+            }
+
+
+            h4 {
+                font-size: 16px !important;
+                margin-top: 8px;
+                color: white;
+                transition: color 0.3s ease;
+                font-weight: 400 !important;
+
+            }
+
+        }
+
 
 
         @media (max-width:768px) {
@@ -36,9 +62,14 @@
         border-bottom: 1px solid rgb(94, 94, 94);
         margin: 15px 25px;
 
+        &.collapsedDivider{
+            margin: 5px 15px;
+        }
+
         @media (max-width:768px) {
             & {
                 margin: 0px !important;
+                padding: 0 !important;
             }
         }
 
@@ -51,7 +82,7 @@
         font-weight: 500;
         // padding: 10px 15px;
         transition: all 0.3s ease;
-        margin-top: -10px;
+        margin-top: -3px ;
 
         /* Change icon color */
         i {

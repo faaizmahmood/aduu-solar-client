@@ -5,7 +5,7 @@ const projectDetails = () => {
         <>
 
             <section className={`${styles.projectDetails}`}>
-                 project Details
+                Project Details
             </section>
 
         </>

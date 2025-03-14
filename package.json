@@ -1,15 +1,19 @@
 {
   "name": "client",
   "private": true,
+  "sideEffects": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "npm run build && source-map-explorer build/static/js/*.js"
   },
   "dependencies": {
+    "@mui/material": "^6.4.6",
+    "@mui/x-data-grid": "^7.27.2",
     "@reduxjs/toolkit": "^2.6.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
@@ -21,6 +25,7 @@
     "nprogress": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-helmet-async": "^2.0.5",
     "react-icons": "^5.5.0",
     "react-pro-sidebar": "^1.1.0",
     "react-redux": "^9.2.0",
@@ -28,6 +33,7 @@
     "react-spinners": "^0.15.0",
     "react-toastify": "^11.0.3",
     "sass": "^1.85.0",
+    "use-react-router-breadcrumbs": "^4.0.1",
     "yup": "^1.6.1"
   },
   "devDependencies": {
@@ -42,7 +48,9 @@
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
     "postcss": "^8.5.3",
+    "source-map-explorer": "^2.5.3",
     "tailwindcss": "^4.0.8",
-    "vite": "^6.1.1"
+    "vite": "^6.1.1",
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }

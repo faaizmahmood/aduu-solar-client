@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import ManageTeam from "../pages/admin/manageTeam/manageTeam.jsx";
 
 // Lazy-loaded components
 const Login = lazy(() => import("../pages/auth/login/login.jsx"));
@@ -13,7 +14,7 @@ const Dashboard = lazy(() => import("../pages/sharedPages/dashboard/dashboard.js
 // const UserProjects = lazy(() => import("../pages/user/projects/projects.jsx"));
 const Projects = lazy(() => import("../pages/sharedPages/projects/projects.jsx"));
 const ProjectDetails = lazy(() => import("../pages/sharedPages/projectDetails/projectDetails.jsx"));
-const CreateProject = lazy(() => import("../pages/user/createProject/createProject.jsx"));
+const OrderService = lazy(() => import("../pages/user/orderService/orderService.jsx"));
 const AssignProject = lazy(() => import("../pages/admin/assignProject/assignProject.jsx"));
 const NotFound = lazy(() => import("../components/notFound/NotFound.jsx"));
 const Loading = lazy(() => import("../components/loading/loading.jsx"));
@@ -51,19 +52,26 @@ const AppRoutes = () => {
                         <Route path="/login" element={<Navigate to="/" replace />} />
                         <Route path="/signup" element={<Navigate to="/" replace />} />
 
+                        {/* Redirect Paths*/}
+                        <Route path="/project/order-service" element={<Navigate to="/projects" replace />} />
+                        <Route path="/order-service" element={<Navigate to="/projects" replace />} />
+                        <Route path="/project" element={<Navigate to="/projects" replace />} />
+
                         {/* Dashboard Redirect Based on Role */}
                         <Route path="/" element={<ProtectedRoute element={<Dashboard />} allowedRoles={["admin", "staff", "client"]} />} />
 
                         {/* Role-Based Routes */}
-                        {/* <Route path="/admin-projects" element={<ProtectedRoute element={<AdminProjects />} allowedRoles={["admin"]} />} />
-                        <Route path="/staff-projects" element={<ProtectedRoute element={<StaffProjects />} allowedRoles={["staff"]} />} />
-                        <Route path="/user-projects" element={<ProtectedRoute element={<UserProjects />} allowedRoles={["client"]} />} /> */}
                         <Route path="/projects" element={<ProtectedRoute element={<Projects />} allowedRoles={["client", "staff", "admin"]} />} />
 
-                        <Route path="/project-details/:id" element={<ProtectedRoute element={<ProjectDetails />} allowedRoles={["admin", "staff", "client"]} />} />
+                        <Route path="/project-details/:projectID" element={<ProtectedRoute element={<ProjectDetails />} allowedRoles={["admin", "staff", "client"]} />} />
 
-                        <Route path="/create-project" element={<ProtectedRoute element={<CreateProject />} allowedRoles={["client"]} />} />
+                        <Route path="/project/order-service/:projectID" element={<ProtectedRoute element={<OrderService />} allowedRoles={["client"]} />} />
+
                         <Route path="/assign-project" element={<ProtectedRoute element={<AssignProject />} allowedRoles={["admin"]} />} />
+
+                        <Route path="/add-service" element={<ProtectedRoute element={"Add Service"} allowedRoles={["admin"]} />} />
+
+                        <Route path="/manage-team" element={<ProtectedRoute element={<ManageTeam />} allowedRoles={["admin"]} />} />
 
                         {/* Catch-All Route for Authenticated Users */}
                         <Route path="*" element={<NotFound />} />

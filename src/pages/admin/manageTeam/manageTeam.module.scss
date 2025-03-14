@@ -1,0 +1,49 @@
+.manageTeam {
+    h4 {
+        font-size: 18px !important;
+    }
+
+
+    .password_toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: gray;
+    }
+
+    .password-toggle:hover {
+        color: black;
+    }
+
+    .dataGrid {
+        button {
+            outline: none;
+            border: none;
+            background-color: transparent;
+
+            i {
+                color: var(--primary-color);
+                padding: 5px;
+                border: 1px solid var(--primary-color);
+                margin: 0px 3px;
+                border-radius: 50%;
+                transition: all 0.8s;
+            }
+
+            // Style the first button (Edit)
+            &:nth-child(1) i:hover {
+                background-color: var(--primary-color);
+                color: white;
+            }
+
+            // Style the second button (Delete)
+            &:nth-child(2) i:hover {
+                background-color: red;
+                color: white;
+                border: red;
+            }
+        }
+    }
+}

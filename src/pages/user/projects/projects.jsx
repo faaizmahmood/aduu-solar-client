@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { motion, AnimatePresence } from "framer-motion";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -5,6 +6,7 @@ import useProjects from "./useProjects";
 import styles from "./projects.module.scss";
 import { PulseLoader } from "react-spinners";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
     projectName: Yup.string().min(3, "Too Short!").required("Project Name is required"),
@@ -18,6 +20,8 @@ const UserProjects = () => {
     useEffect(() => {
         fetchProjects();
     }, []);
+
+    const navigate = useNavigate()
 
     console.log("Projects Data:", projects); // Debugging
 
@@ -36,6 +40,12 @@ const UserProjects = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.8 }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
+                            onClick={() =>
+                                project.status === 'Pending'
+                                    ? navigate(`/project/order-service/${project._id}`, { state: { project } })
+                                    : navigate(`/project-details/${project._id}`, { state: { project } })
+                            }
+
                         >
                             <div className={styles.folderTab}></div>
                             <div className={styles.folderBody}>
