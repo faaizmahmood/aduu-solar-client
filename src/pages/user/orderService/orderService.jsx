@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import styles from './orderService.module.scss';
 
@@ -45,9 +45,9 @@ const OrderService = () => {
 
     return (
         <>
-            <Helmet>
+            {/* <Helmet>
                 <meta name="robots" content="noindex, nofollow" />
-            </Helmet>
+            </Helmet> */}
 
             <h3>Order Service</h3>
             {currentServiceName && <h5>{currentServiceName}</h5>}

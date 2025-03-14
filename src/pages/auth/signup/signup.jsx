@@ -3,7 +3,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import styles from './signup.module.scss';
 import logo from '../../../../public/images/AduuSolar_Logo.png';
 import useSignup from './useSignup';
-import { Helmet } from "react-helmet-async";  // ✅ Import Helmet for SEO
+// import { Helmet } from "react-helmet-async";
 
 const Signup = () => {
     const {
@@ -18,7 +18,7 @@ const Signup = () => {
     return (
         <>
             {/* ✅ Add SEO Metadata */}
-            <Helmet>
+            {/* <Helmet>
                 <title>Sign Up | AduuSolar</title>
                 <meta name="description" content="Create your AduuSolar account and manage your solar projects easily." />
                 <meta name="keywords" content="AduuSolar, Sign Up, Solar Energy, Dashboard" />
@@ -26,7 +26,7 @@ const Signup = () => {
                 <meta property="og:description" content="Create your AduuSolar account and manage your solar projects easily." />
                 <meta property="og:type" content="website" />
                 <meta name="robots" content="index, follow" />
-            </Helmet>
+            </Helmet> */}
 
             <section className={`${styles.signup}`}>
                 <div className={`${styles.loginWrapper}`}>

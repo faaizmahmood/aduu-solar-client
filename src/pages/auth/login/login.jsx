@@ -4,7 +4,7 @@ import styles from './login.module.scss';
 import logo from '../../../../public/images/AduuSolar_Logo.png';
 import useLogin from './useLogin';
 import { PulseLoader } from 'react-spinners';
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 const Login = () => {
     const { formik, loading } = useLogin();
@@ -12,7 +12,7 @@ const Login = () => {
 
     return (
         <>
-            <Helmet>
+            {/* <Helmet>
                 <title>Login | AduuSolar</title>
                 <meta name="description" content="Log in to your AduuSolar account to manage your solar projects efficiently." />
                 <meta name="keywords" content="AduuSolar, Solar Projects, Login, Dashboard" />
@@ -20,7 +20,7 @@ const Login = () => {
                 <meta property="og:description" content="Log in to your AduuSolar account to manage your solar projects efficiently." />
                 <meta property="og:type" content="website" />
                 <meta name="robots" content="index, follow" />
-            </Helmet>
+            </Helmet> */}
 
             <section className={`${styles.login}`}>
                 <div className={`${styles.loginWrapper}`}>

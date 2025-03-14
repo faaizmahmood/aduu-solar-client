@@ -3,7 +3,7 @@ import AdminDashboard from "../../admin/dashboard/dashboard";
 import StaffDashboard from "../../staff/dashboard/dashboard";
 import UserDashboard from "../../user/dashboard/dashboard";
 import styles from "./dashboard.module.scss";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
     // Get user details from Redux store or localStorage
@@ -15,9 +15,9 @@ const Dashboard = () => {
     return (
 
         <>
-            <Helmet>
+            {/* <Helmet>
                 <meta name="robots" content="noindex, nofollow" />
-            </Helmet>
+            </Helmet> */}
 
             <section className={styles.dashboard}>
                 {userRole === "admin" && <AdminDashboard />}
