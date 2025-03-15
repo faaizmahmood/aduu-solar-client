@@ -49,7 +49,7 @@ const OrderService = () => {
                 <meta name="robots" content="noindex, nofollow" />
             </Helmet> */}
 
-            <h3>Order Service</h3>
+            {/* <h3>Order Service</h3> */}
             {currentServiceName && <h5>{currentServiceName}</h5>}
 
             <section className={styles.orderService}>

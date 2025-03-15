@@ -71,7 +71,7 @@ const ProtectedLayout = () => {
                     )}
 
                     {userRole === "admin" && (
-                        <MenuItem icon={<i className="fa-regular fa-plus"></i>} className={styles.MenuItem} onClick={() => navigate("/add-service")}>Add Service</MenuItem>
+                        <MenuItem icon={<i className="fa-regular fa-user-gear"></i>} className={styles.MenuItem} onClick={() => navigate("/services")}>Services</MenuItem>
                     )}
 
                     <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />

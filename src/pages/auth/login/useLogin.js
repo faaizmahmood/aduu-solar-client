@@ -34,7 +34,7 @@ const useLogin = () => {
                 toast.success('Login Successful');
                 setLoading(false);
                 location.reload()
-                
+
             } catch (error) {
                 setLoading(false);
                 if (error.response) {

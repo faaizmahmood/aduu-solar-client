@@ -3,21 +3,22 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
-import ManageTeam from "../pages/admin/manageTeam/manageTeam.jsx";
 
-// Lazy-loaded components
+// Lazy-loaded pages
 const Login = lazy(() => import("../pages/auth/login/login.jsx"));
 const Signup = lazy(() => import("../pages/auth/signup/signup.jsx"));
 const Dashboard = lazy(() => import("../pages/sharedPages/dashboard/dashboard.jsx"));
-// const AdminProjects = lazy(() => import("../pages/admin/projects/projects.jsx"));
-// const StaffProjects = lazy(() => import("../pages/staff/projects/projects.jsx"));
-// const UserProjects = lazy(() => import("../pages/user/projects/projects.jsx"));
 const Projects = lazy(() => import("../pages/sharedPages/projects/projects.jsx"));
 const ProjectDetails = lazy(() => import("../pages/sharedPages/projectDetails/projectDetails.jsx"));
-const OrderService = lazy(() => import("../pages/user/orderService/orderService.jsx"));
+const OrderService = lazy(() => import("../pages/user/orderService2/orderService.jsx"));
 const AssignProject = lazy(() => import("../pages/admin/assignProject/assignProject.jsx"));
-const NotFound = lazy(() => import("../components/notFound/NotFound.jsx"));
-const Loading = lazy(() => import("../components/loading/loading.jsx"));
+const ManageTeam = lazy(() => import("../pages/admin/manageTeam/manageTeam.jsx"));
+const AddService = lazy(() => import("../pages/admin/addService/addService.jsx"));
+const Services = lazy(() => import("../pages/admin/services/services.jsx"));
+
+// Lightweight components (not lazy-loaded)
+import NotFound from "../components/notFound/NotFound.jsx";
+import Loading from "../components/loading/loading.jsx";
 
 const ProtectedRoute = ({ element, allowedRoles }) => {
     const authToken = Cookies.get("authToken");
@@ -69,7 +70,9 @@ const AppRoutes = () => {
 
                         <Route path="/assign-project" element={<ProtectedRoute element={<AssignProject />} allowedRoles={["admin"]} />} />
 
-                        <Route path="/add-service" element={<ProtectedRoute element={"Add Service"} allowedRoles={["admin"]} />} />
+                        <Route path="/services/add-service" element={<ProtectedRoute element={<AddService />} allowedRoles={["admin"]} />} />
+
+                        <Route path="/services" element={<ProtectedRoute element={<Services />} allowedRoles={["admin"]} />} />
 
                         <Route path="/manage-team" element={<ProtectedRoute element={<ManageTeam />} allowedRoles={["admin"]} />} />
 

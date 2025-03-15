@@ -27,8 +27,6 @@ const UserProjects = () => {
 
     return (
         <section className={styles.projects}>
-            <h3>Projects</h3>
-
             <div className={styles.userProjects}>
 
                 <AnimatePresence>

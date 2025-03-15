@@ -6,7 +6,7 @@ const UserDashboard = () => {
 
             <section className={`${styles.dashboard}`}>
                 
-                <h3>Welcome, Faaiz Mahmood</h3>
+                
 
             </section>
 
