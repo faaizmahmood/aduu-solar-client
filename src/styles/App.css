@@ -180,3 +180,21 @@ h5 {
     color: red;
   }
 }
+
+
+
+/* dropdown */
+
+:global(.dropdown-menu) {
+  background-color: #1A1E34 !important;
+  border: none;
+}
+
+:global(.dropdown-item) {
+  color: white !important;
+}
+
+:global(.dropdown-item:hover),
+:global(.dropdown-item:focus) {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}

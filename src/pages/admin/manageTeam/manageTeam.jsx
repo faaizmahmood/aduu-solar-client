@@ -25,7 +25,7 @@ const ManageTeam = () => {
     return (
         <>
             <section className={styles.manageTeam}>
-                <h3>Manage Team</h3>
+                {/* <h3>Manage Team</h3> */}
 
                 <div className="mt-5">
                     <div className="row align-items-center">

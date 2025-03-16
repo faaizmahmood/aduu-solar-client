@@ -72,6 +72,10 @@ const AppRoutes = () => {
 
                         <Route path="/services/add-service" element={<ProtectedRoute element={<AddService />} allowedRoles={["admin"]} />} />
 
+                        <Route path="/services/edit-service/:serviceId" element={<ProtectedRoute element={<AddService />} allowedRoles={["admin"]} />} />
+
+                        <Route path="/services/edit-service" element={<Navigate to="/services" replace />} />
+
                         <Route path="/services" element={<ProtectedRoute element={<Services />} allowedRoles={["admin"]} />} />
 
                         <Route path="/manage-team" element={<ProtectedRoute element={<ManageTeam />} allowedRoles={["admin"]} />} />

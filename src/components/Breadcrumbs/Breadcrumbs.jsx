@@ -10,6 +10,7 @@ const routes = [
     { path: "/projects", breadcrumb: "My Projects" },
     { path: "/services", breadcrumb: "Services" },
     { path: "/services/add-service", breadcrumb: "Add Service" }, // Nested under "Services"
+    { path: "/services/edit-service:/:serviceId", breadcrumb: "Edit Service" },
     { path: "/project/order-service/:ProjectID", breadcrumb: "Order Service" },
 ];
 
@@ -18,7 +19,13 @@ const Breadcrumbs = () => {
     const location = useLocation();
     const user = useSelector((state) => state.user?.user);
 
-    const pageTitle = breadcrumbs[breadcrumbs.length - 1]?.breadcrumb || "Page";
+    const currentPath = location.pathname;
+
+    let pageTitle = breadcrumbs[breadcrumbs.length - 1]?.breadcrumb || "Page";
+
+    if (currentPath.startsWith("/services/edit-service/")) {
+        pageTitle = "Edit Service";
+    }
 
     return (
         <>

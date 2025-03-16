@@ -7,11 +7,22 @@ import Cookies from "js-cookie";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useService = () => {
-    const [services, setServices] = useState([]); // Initialize as an empty array
 
+    const [services, setServices] = useState([]); // List of services
+
+    const [loading, setLoading] = useState(false);
+
+    const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const [showModal, setShowModal] = useState(false);
+
+    const [selectedService, setSelectedService] = useState(null); // Track selected service
+
+    // Fetch all services
     useEffect(() => {
         const fetchServices = async () => {
             try {
+                setLoading(true);
                 NProgress.start();
                 const token = Cookies.get("authToken");
 
@@ -33,23 +44,67 @@ const useService = () => {
 
             } finally {
                 NProgress.done();
+                setLoading(false);
             }
         };
 
         fetchServices(); // Call the async function
     }, []);
 
+    // Open delete confirmation modal
+    const handleOpen = (service) => {
+        setSelectedService(service);
+        setShowModal(true);
+    };
 
-    const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this service?")) {
-            console.log("Deleted service:", id);
-            // Add delete logic here
+    // Close delete modal
+    const handleClose = () => {
+        setShowModal(false);
+        setSelectedService(null);
+    };
+
+    // Delete service function
+    const deleteService = async () => {
+        if (!selectedService) return;
+
+        try {
+            setDeleteLoading(true);
+            NProgress.start();
+            const token = Cookies.get("authToken");
+
+            const response = await axios.delete(`${API_BASE_URL}/service/delete-service/${selectedService._id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                toast.success("Service deleted successfully!");
+                setServices(services.filter((s) => s._id !== selectedService._id));
+                handleClose(); // Close modal
+            }
+
+        } catch (error) {
+            console.error("Error deleting service:", error);
+            toast.error(
+                error.response?.data?.message || "Failed to delete service."
+            );
+
+        } finally {
+            NProgress.done();
+            setDeleteLoading(false);
         }
     };
 
     return {
         services,
-        handleDelete 
+        loading,
+        showModal,
+        selectedService,
+        handleClose,
+        handleOpen,
+        deleteService,
+        deleteLoading
     };
 };
 
