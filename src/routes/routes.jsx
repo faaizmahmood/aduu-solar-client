@@ -80,6 +80,14 @@ const AppRoutes = () => {
 
                         <Route path="/services" element={<ProtectedRoute element={<Services />} allowedRoles={["admin"]} />} />
 
+                        <Route path="/invoices" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin", "client"]} />} />
+
+                        <Route path="/create-invoice" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin"]} />} />
+
+                        <Route path="/settings" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin", "staff", "client"]} />} />
+
+                        <Route path="/profile" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin", "staff", "client"]} />} />
+
                         <Route path="/manage-team" element={<ProtectedRoute element={<ManageTeam />} allowedRoles={["admin"]} />} />
 
                         {/* Catch-All Route for Authenticated Users */}

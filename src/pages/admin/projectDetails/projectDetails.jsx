@@ -2,7 +2,7 @@
 const AdminProjectDetails = () => {
     return (
         <>
-            Admin projectDetails
+            Admin project Details
         </>
     )
 }

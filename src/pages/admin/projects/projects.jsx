@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import useProjects from "./useProjects";
 import Loading from "../../../components/loading/loading";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AdminProjects = () => {
     const {
@@ -12,8 +13,17 @@ const AdminProjects = () => {
         searchTerm
     } = useProjects();
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
+    const handleProjectClick = (project) => {
+        if (project?.status === "Pending") {
+            toast.warn("Project service is not available.");
+        } else if (project?.status === "In Progress") {
+            navigate(`/projects/project-details/${project?._id}`);
+        } else if (project?.status === "Awaiting Assignment") {
+            toast.info("Awaiting staff assignment.");
+        }
+    };
 
     return (
         <>
@@ -30,7 +40,7 @@ const AdminProjects = () => {
                                     type="text"
                                     placeholder="Search Projects"
                                     value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)} 
+                                    onChange={(e) => setSearchTerm(e.target.value)}
                                     className="form-control"
                                 />
                             </div>
@@ -50,10 +60,12 @@ const AdminProjects = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.8 }}
                                         transition={{ duration: 0.5, ease: "easeOut" }}
-                                        onClick={() => navigate(`/projects/project-details/${project?._id}`)}
+                                        onClick={() => handleProjectClick(project)}
                                     >
                                         <div className={styles.serviceItem}>
                                             <h3>{project?.projectName}</h3>
+                                            <h5>Address: {project?.siteAddress}</h5>
+                                            <h6>Status: {project?.status}</h6>
                                         </div>
                                     </motion.div>
                                 ))
