@@ -1,15 +1,11 @@
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
-import Cookies from 'js-cookie';
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import apiService from "../../../utils/apiClient";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useAddService = () => {
-
-    const token = Cookies.get("authToken");
 
     const { serviceId } = useParams();
 
@@ -55,15 +51,9 @@ const useAddService = () => {
         const fetchService = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${API_BASE_URL}/service/get-service/${serviceId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+                const response = await apiService.get(`/service/get-service/${serviceId}`);
 
                 if (response.status === 200) {
-
                     const service = response.data.services;
 
                     setInitialValues({
@@ -72,17 +62,15 @@ const useAddService = () => {
                         intakeForm: service.intakeForm || [],
                     });
 
-                    return
+                    return;
                 }
 
-                toast.error(response.data.message || "Failed to load!")
-                return
-
+                toast.error(response.data.message || "Failed to load!");
             } catch (error) {
                 console.error("Fetch Service Error:", error);
-                toast.error("Failed to load service data....");
-                // Only navigate if it's a serious issue (like 404)
-                if (error.response && error.response.status === 404) {
+                toast.error("Failed to load service data...");
+
+                if (error.response?.status === 404) {
                     navigate("/services");
                 }
             } finally {
@@ -91,31 +79,21 @@ const useAddService = () => {
         };
 
         fetchService();
-    }, [serviceId, navigate, token]);
+    }, [serviceId, navigate]);
+
 
 
 
     // Handle submit (add/edit service)
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-
         try {
             let response;
             if (serviceId) {
                 // Update Service
-                response = await axios.put(`${API_BASE_URL}/service/update-service/${serviceId}`, values, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+                response = await apiService.put(`/service/update-service/${serviceId}`, values);
             } else {
                 // Add Service
-                response = await axios.post(`${API_BASE_URL}/service/add-service`, values, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+                response = await apiService.post(`/service/add-service`, values);
             }
 
             if (response.status === 200 || response.status === 201) {
@@ -126,12 +104,13 @@ const useAddService = () => {
                 toast.error(response.data.message || "Failed to save service");
             }
         } catch (error) {
-            console.log(error)
-            toast.error("An error occurred. Please try again.");
+            console.error("Service Error:", error);
+            toast.error(error.response?.data?.message || "An error occurred. Please try again.");
         } finally {
             setSubmitting(false);
         }
     };
+
 
     return {
         handleSubmit,

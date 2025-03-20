@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import Cookies from 'js-cookie';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import apiService from '../../../utils/apiClient';
 
 const useLogin = () => {
     const [loading, setLoading] = useState(false);
@@ -25,26 +24,22 @@ const useLogin = () => {
         onSubmit: async (values) => {
             setLoading(true);
             try {
-                const response = await axios.post(`${API_BASE_URL}/auth/signin`, values);
-                const { authToken } = response.data; // Assuming API returns { token: '...' }
+                const response = await apiService.post('/auth/signin', values);
+                const { authToken } = response.data; // Assuming API returns { authToken: '...' }
 
                 // Store token in cookies (expires in 7 days)
                 Cookies.set('authToken', authToken, { expires: 7 });
 
                 toast.success('Login Successful');
                 setLoading(false);
-                location.reload()
-
+                location.reload();
             } catch (error) {
                 setLoading(false);
-                if (error.response) {
-                    toast.error(error.response.data.message);
-                } else {
-                    toast.error('An error occurred. Please try again later.');
-                }
+                toast.error(error.response?.data?.message || 'An error occurred. Please try again later.');
             }
         }
     });
+
 
     return {
         formik,

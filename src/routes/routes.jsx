@@ -64,11 +64,13 @@ const AppRoutes = () => {
                         {/* Role-Based Routes */}
                         <Route path="/projects" element={<ProtectedRoute element={<Projects />} allowedRoles={["client", "staff", "admin"]} />} />
 
-                        <Route path="/project-details/:projectID" element={<ProtectedRoute element={<ProjectDetails />} allowedRoles={["admin", "staff", "client"]} />} />
+                        <Route path="/projects/project-details/:projectID" element={<ProtectedRoute element={<ProjectDetails />} allowedRoles={["admin", "staff", "client"]} />} />
 
                         <Route path="/project/order-service/:projectID" element={<ProtectedRoute element={<OrderService />} allowedRoles={["client"]} />} />
 
                         <Route path="/assign-project" element={<ProtectedRoute element={<AssignProject />} allowedRoles={["admin"]} />} />
+
+                        <Route path="/projects/project-details" element={<Navigate to="/projects" replace />} />
 
                         <Route path="/services/add-service" element={<ProtectedRoute element={<AddService />} allowedRoles={["admin"]} />} />
 

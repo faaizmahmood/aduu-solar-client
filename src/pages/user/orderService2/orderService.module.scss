@@ -37,4 +37,17 @@
         }
     }
 
+
+    .backSericeSelection {
+
+        i {
+            background-color: var(--primary-color);
+            padding: 8px 9px;
+            margin: 0px !important;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    }
+
 }

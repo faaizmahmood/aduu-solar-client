@@ -1,15 +1,20 @@
+import { useSelector } from 'react-redux'
 import styles from './projectDetails.module.scss'
+import AdminProjectDetails from '../../admin/projectDetails/projectDetails'
 
-const projectDetails = () => {
+const ProjectDetails = () => {
+
+    const currentUser = useSelector((state) => state.user.user)
+
     return (
         <>
 
             <section className={`${styles.projectDetails}`}>
-                Project Details
+                {currentUser?.role && <AdminProjectDetails />}
             </section>
 
         </>
     )
 }
 
-export default projectDetails
+export default ProjectDetails

@@ -10,8 +10,9 @@ const routes = [
     { path: "/projects", breadcrumb: "My Projects" },
     { path: "/services", breadcrumb: "Services" },
     { path: "/services/add-service", breadcrumb: "Add Service" }, // Nested under "Services"
-    { path: "/services/edit-service:/:serviceId", breadcrumb: "Edit Service" },
-    { path: "/project/order-service/:ProjectID", breadcrumb: "Order Service" },
+    { path: "/services/edit-service/:serviceId", breadcrumb: "Edit Service" },
+    { path: "/projects/project-details/:serviceId", breadcrumb: "Project Details" },
+    // { path: "/project/order-service/:ProjectID", breadcrumb: "Order Service" },
 ];
 
 const Breadcrumbs = () => {
@@ -25,6 +26,10 @@ const Breadcrumbs = () => {
 
     if (currentPath.startsWith("/services/edit-service/")) {
         pageTitle = "Edit Service";
+    }
+
+    if (currentPath.startsWith("/project/order-service/")) {
+        pageTitle = "Order Service";
     }
 
     return (

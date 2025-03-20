@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import apiService from '../../../utils/apiClient';
 
 const useSignup = () => {
     const [loading, setLoading] = useState(false);
@@ -32,15 +30,15 @@ const useSignup = () => {
         onSubmit: async (values) => {
             setLoading(true);
             try {
-                const response = await axios.post(`${API_BASE_URL}/auth/signup`, values);
-                const { authToken } = response.data; // Assuming API returns { token: '...' }
+                const response = await apiService.post('/auth/signup', values);
+                const { authToken } = response.data; // Assuming API returns { authToken: '...' }
 
                 // Store token in cookies (expires in 7 days)
                 Cookies.set('authToken', authToken, { expires: 7 });
 
                 toast.success('Signup Successful!');
                 console.log('Signup Successful:', response.data);
-                location.reload()
+                location.reload();
             } catch (error) {
                 console.error('Signup Error:', error.response?.data || error.message);
                 toast.error(error.response?.data?.message || 'Signup Failed');
@@ -49,6 +47,7 @@ const useSignup = () => {
             }
         }
     });
+
 
     return {
         formik,

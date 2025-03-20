@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import NProgress from "nprogress";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import apiService from "../../../utils/apiClient";
 
 const useProjects = () => {
     const [projects, setProjects] = useState([]);
@@ -18,17 +16,8 @@ const useProjects = () => {
         NProgress.start();
 
         try {
-
-            const token = Cookies.get("authToken");
-
-            const response = await axios.get(`${API_BASE_URL}/project/client-projects`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
+            const response = await apiService.get("/project/client-projects");
             setProjects(response.data.projects); // Update project state
-
         } catch (err) {
             console.error("Error fetching projects:", err);
             setError(err.response?.data?.message || "Failed to fetch projects");
@@ -37,6 +26,7 @@ const useProjects = () => {
             NProgress.done();
         }
     };
+
 
     // Open Modal
     const openModal = () => setShowModal(true);
@@ -50,18 +40,7 @@ const useProjects = () => {
         setError("");
 
         try {
-            const token = Cookies.get("authToken");
-
-            const response = await axios.post(
-                `${API_BASE_URL}/project/create-project`,
-                values,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+            const response = await apiService.post("/project/create-project", values);
 
             if (response.status >= 200 && response.status < 300) {
                 toast.success("Project Created!");
@@ -74,7 +53,6 @@ const useProjects = () => {
             } else {
                 throw new Error(response.data?.message || "Failed to create project");
             }
-
         } catch (err) {
             console.error("Error creating project:", err);
             toast.error("Error creating project");
@@ -83,6 +61,7 @@ const useProjects = () => {
             setLoading(false);
         }
     };
+
 
     // Fetch projects on component mount
     useEffect(() => {
@@ -99,6 +78,8 @@ const useProjects = () => {
             case "completed":
                 return "green";
             case "in progress":
+                return "blue";
+            case "awaiting assignment":
                 return "orange";
             case "pending":
                 return "red";
@@ -106,6 +87,7 @@ const useProjects = () => {
                 return "gray";
         }
     };
+
 
     return {
         projects,

@@ -13,6 +13,7 @@
 :root {
   --primary-color: #1A1E34;
   --secondary-color: #1A1E34;
+  --primary-transparent-color: #1a1e34db;
   --background-color: #F8F9FA;
   --text-color: #5A5A5A;
   --gradient-bg: radial-gradient(at top left, var(--primary-color) 0%, var(--secondary-color) 100%);

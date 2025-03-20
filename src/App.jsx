@@ -4,14 +4,13 @@ import "nprogress/nprogress.css"; // Import NProgress styles
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, setError, setLoading } from "./redux/userSlice";
-import axios from "axios";
 import Cookies from "js-cookie";
 import ProtectedLayout from "./layout/protectedLayout";
 import UnProtectedLayout from "./layout/unProtectedLayout";
 import NProgress from "nprogress";
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
+import apiService from "./utils/apiClient.js"; // Import centralized API service
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const dispatch = useDispatch();
@@ -24,18 +23,12 @@ function App() {
     NProgress.start(); // Start NProgress
 
     try {
-      const authToken = Cookies.get("authToken");
-      if (!authToken) throw new Error("No auth token found");
-
-      const response = await axios.get(`${API_BASE_URL}/user/profile`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-
+      const response = await apiService.get("/user/profile"); // Using centralized API service
       dispatch(setUser(response.data.user));
       localStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
       console.error("Error fetching profile:", error);
-      dispatch(setError(error.message));
+      dispatch(setError(error.response?.data?.message || "Failed to fetch profile"));
     } finally {
       dispatch(setLoading(false));
       NProgress.done(); // Stop NProgress
@@ -51,17 +44,14 @@ function App() {
 
   return (
     <>
-
       <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 1.3 }}>
-
+        transition={{ duration: 1.3 }}
+      >
         {isAuthenticated ? <ProtectedLayout /> : <UnProtectedLayout />}
-
       </motion.main>
-
 
       <ToastContainer
         position="bottom-center"

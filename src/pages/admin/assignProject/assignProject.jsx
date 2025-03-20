@@ -4,7 +4,7 @@ const assignProject = () => {
   return (
     <>
         <section className={`${styles.assignProject}`}>
-        Assign Project
+        
         </section>
     </>
   )

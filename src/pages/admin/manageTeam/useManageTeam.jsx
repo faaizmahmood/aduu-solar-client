@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import apiService from "../../../utils/apiClient";
 
 const useManageTeam = () => {
     const [showModal, setShowModal] = useState(false);
@@ -16,9 +14,7 @@ const useManageTeam = () => {
         const fetchStaff = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${API_BASE_URL}/get/all-staff`, {
-                    headers: { Authorization: `Bearer ${Cookies.get("authToken")}` }
-                });
+                const response = await apiService.get("/get/all-staff");
 
                 // Transform API response to match DataGrid format
                 const formattedStaff = response.data.staff.map((staff) => ({
@@ -28,13 +24,13 @@ const useManageTeam = () => {
                     email: staff.email,
                     phone: staff.phone,
                     status: staff.status,
-                    projectsAssigned: staff.prjectAssigned || 0, // Fix typo and handle missing data
+                    projectsAssigned: staff.projectAssigned || 0, // Fixed typo
                     dateAdded: new Date(staff.createdAt).toISOString().split("T")[0], // Format date
                 }));
 
                 setStaffData(formattedStaff);
             } catch (error) {
-                console.error(error);
+                console.error("Fetch Staff Error:", error);
                 toast.error("Failed to fetch staff data.");
             } finally {
                 setLoading(false);
@@ -43,6 +39,7 @@ const useManageTeam = () => {
 
         fetchStaff();
     }, []);
+
 
     // Open Modal
     const openModal = () => setShowModal(true);
@@ -54,10 +51,7 @@ const useManageTeam = () => {
     const addStaff = async (newStaff) => {
         setLoading(true);
         try {
-
-            const response = await axios.post(`${API_BASE_URL}/add/add-staff`, newStaff, {
-                headers: { Authorization: `Bearer ${Cookies.get("authToken")}` }
-            });
+            const response = await apiService.post("/add/add-staff", newStaff);
 
             toast.success(response.data.message || "Staff member added successfully!");
 
@@ -69,21 +63,22 @@ const useManageTeam = () => {
                 email: newStaff.email,
                 phone: newStaff.phone,
                 status: newStaff.status,
-                projectsAssigned: newStaff.prjectAssigned || 0,
+                projectsAssigned: newStaff.projectAssigned || 0, // Fixed typo
                 dateAdded: new Date().toISOString().split("T")[0],
             };
 
             setStaffData([...staffData, newStaffMember]);
 
-            return true
+            return true;
         } catch (error) {
-            console.error(error);
+            console.error("Add Staff Error:", error);
             toast.error(error.response?.data?.message || "Failed to add staff member.");
-            return false
+            return false;
         } finally {
             setLoading(false);
         }
     };
+
 
     const columns = [
         { field: "id", headerName: "ID", width: 200 },

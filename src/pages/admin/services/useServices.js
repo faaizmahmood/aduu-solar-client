@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import NProgress from "nprogress";
-import Cookies from "js-cookie";
+import apiService from "../../../utils/apiClient";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useService = () => {
 
@@ -24,24 +22,17 @@ const useService = () => {
             try {
                 setLoading(true);
                 NProgress.start();
-                const token = Cookies.get("authToken");
 
-                const response = await axios.get(`${API_BASE_URL}/service/get-service`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await apiService.get("/service/get-service");
 
                 if (response.status === 200) {
                     setServices(response.data.services);
                 }
-
             } catch (error) {
                 console.error("Error fetching services:", error);
                 toast.error(
                     error.response?.data?.message || "An unexpected error occurred. Please try again."
                 );
-
             } finally {
                 NProgress.done();
                 setLoading(false);
@@ -50,6 +41,7 @@ const useService = () => {
 
         fetchServices(); // Call the async function
     }, []);
+
 
     // Open delete confirmation modal
     const handleOpen = (service) => {
@@ -70,31 +62,25 @@ const useService = () => {
         try {
             setDeleteLoading(true);
             NProgress.start();
-            const token = Cookies.get("authToken");
 
-            const response = await axios.delete(`${API_BASE_URL}/service/delete-service/${selectedService._id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await apiService.delete(`/service/delete-service/${selectedService._id}`);
 
             if (response.status === 200) {
                 toast.success("Service deleted successfully!");
-                setServices(services.filter((s) => s._id !== selectedService._id));
+                setServices((prevServices) => prevServices.filter((s) => s._id !== selectedService._id));
                 handleClose(); // Close modal
             }
-
         } catch (error) {
             console.error("Error deleting service:", error);
             toast.error(
                 error.response?.data?.message || "Failed to delete service."
             );
-
         } finally {
             NProgress.done();
             setDeleteLoading(false);
         }
     };
+
 
     return {
         services,

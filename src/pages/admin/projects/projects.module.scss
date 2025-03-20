@@ -1,0 +1,42 @@
+.projects {
+
+    .serviceItem {
+        background-color: rgb(255, 255, 255);
+        min-height: 100px;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        height: 100%;
+        cursor: pointer;
+
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        h3 {
+            font-size: 18px !important;
+
+            span {
+                font-size: 14px;
+                color: var(--primary-color);
+            }
+        }
+    }
+
+
+    .backSericeSelection {
+
+        i {
+            background-color: var(--primary-color);
+            padding: 8px 9px;
+            margin: 0px !important;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    }
+
+}

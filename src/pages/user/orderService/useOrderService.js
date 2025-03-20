@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import NProgress from "nprogress";
 import { setProject } from "../../../redux/orderServiceSlice";
-import Cookies from "js-cookie";
-import axios from "axios";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import apiService from "../../../utils/apiClient";
 
 const useOrderService = () => {
 
@@ -15,8 +13,6 @@ const useOrderService = () => {
     const dispatch = useDispatch();
 
     const navagate = useNavigate()
-
-    const authToken = Cookies.get("authToken");
 
     const orderServiceState = useSelector(state => state.OrderServiceData);
 
@@ -96,19 +92,13 @@ const useOrderService = () => {
                 formData: orderServiceState?.formData || {},
             };
 
-            const response = await axios.post(`${API_BASE_URL}/order/order-service`, payload, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            const response = await apiService.post("/order/order-service", payload);
 
             if (response.status >= 200 && response.status < 300) {
                 toast.success("Order submitted successfully!");
             } else {
                 toast.error("Order submission failed.");
             }
-
         } catch (error) {
             console.error("Error submitting order:", error);
             toast.error(error.response?.data?.message || "An error occurred while submitting the order.");
@@ -117,6 +107,7 @@ const useOrderService = () => {
             setLoading(false);
         }
     };
+
 
     return {
         selectedServices,

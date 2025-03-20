@@ -1,0 +1,15 @@
+
+
+
+.dragDropFile{
+
+    border: 1px dashed var(--primary-color) !important;
+    background-color: white;
+    cursor: pointer;
+
+    &.activeDrag{
+        background-color: var(--primary-transparent-color);
+        color: white !important;
+    }
+
+}
