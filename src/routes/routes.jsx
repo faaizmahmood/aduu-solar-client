@@ -11,7 +11,7 @@ const Dashboard = lazy(() => import("../pages/sharedPages/dashboard/dashboard.js
 const Projects = lazy(() => import("../pages/sharedPages/projects/projects.jsx"));
 const ProjectDetails = lazy(() => import("../pages/sharedPages/projectDetails/projectDetails.jsx"));
 const OrderService = lazy(() => import("../pages/user/orderService2/orderService.jsx"));
-const AssignProject = lazy(() => import("../pages/admin/assignProject/assignProject.jsx"));
+const AssignProject = lazy(() => import("../pages/admin/assignStaff/assignStaff.jsx"));
 const ManageTeam = lazy(() => import("../pages/admin/manageTeam/manageTeam.jsx"));
 const AddService = lazy(() => import("../pages/admin/addService/addService.jsx"));
 const Services = lazy(() => import("../pages/admin/services/services.jsx"));
@@ -68,7 +68,9 @@ const AppRoutes = () => {
 
                         <Route path="/project/order-service/:projectID" element={<ProtectedRoute element={<OrderService />} allowedRoles={["client"]} />} />
 
-                        <Route path="/assign-project" element={<ProtectedRoute element={<AssignProject />} allowedRoles={["admin"]} />} />
+                        <Route path="/projects/assign-staff/:projectID" element={<ProtectedRoute element={<AssignProject />} allowedRoles={["admin"]} />} />
+
+                        <Route path="/projects/assign-staff" element={<Navigate to="/projects" replace />} />
 
                         <Route path="/projects/project-details" element={<Navigate to="/projects" replace />} />
 

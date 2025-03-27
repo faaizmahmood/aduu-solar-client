@@ -1,6 +1,11 @@
 .appLayout {
     position: relative;
 
+    .logo {
+
+        width: 100px;
+    }
+
     .sidebar {
         overflow: auto;
         -ms-overflow-style: none;
@@ -61,7 +66,7 @@
         border-bottom: 1px solid rgb(94, 94, 94);
         margin: 15px 25px;
 
-        &.collapsedDivider{
+        &.collapsedDivider {
             margin: 5px 15px;
         }
 
@@ -81,7 +86,7 @@
         font-weight: 500;
         // padding: 10px 15px;
         transition: all 0.3s ease;
-        margin-top: -3px ;
+        margin-top: -3px;
 
         /* Change icon color */
         i {

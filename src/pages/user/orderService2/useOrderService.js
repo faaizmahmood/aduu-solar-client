@@ -106,8 +106,11 @@ const useOrderService = () => {
             services: selectedServices.map((service) => ({
                 serviceId: service._id,
                 serviceName: service.serviceName,
-                formValues: formData[service._id] || {},
-            })),
+                formResponses: Object.entries(formData[service._id] || {}).map(([fieldName, fieldValue]) => ({
+                    fieldName,
+                    fieldValue
+                }))
+            }))
         };
 
         console.log("Submitting order for:", orderPayload);
@@ -117,21 +120,17 @@ const useOrderService = () => {
             const response = await apiService.post("/service/order-service", orderPayload);
             if (response.status === 201) {
                 toast.success("Order submitted successfully!");
-                // setSelectedServices([]);
-                // setFormData({});
-                navigate('/projects')
-                location.reload()
+                navigate('/projects');
+                // location.reload()
             }
         } catch (error) {
-
             console.error("Error submitting order:", error);
             toast.error(error.response?.data?.message || "Failed to submit order.");
-
         } finally {
             NProgress.done();
         }
-
     };
+
 
     return {
         loading,

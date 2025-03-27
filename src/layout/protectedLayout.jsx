@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import AppRoutes from "../routes/routes";
 import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs"; // Import Breadcrumbs
 import styles from "./layout.module.scss";
+import Logo from '../../public/images/AduuSolar_Logo.png'
 
 const ProtectedLayout = () => {
     const [collapsed, setCollapsed] = useState(window.innerWidth <= 768);
@@ -54,7 +55,7 @@ const ProtectedLayout = () => {
             >
                 <Menu>
                     <MenuItem className={`${styles.menueCollapser}`} icon={<i className="fas fa-bars" style={{ color: "#fff" }}></i>} onClick={() => setCollapsed(!collapsed)}>
-                        {collapsed ? "" : <h4 className="mt-2">Addu Solar</h4>}
+                        {collapsed ? "" : <img alt="Logo" className={`${styles.logo}`} src={Logo} />}
                     </MenuItem>
 
                     {!collapsed && <div className={styles.menuSection}>Dashboard</div>}
@@ -66,9 +67,9 @@ const ProtectedLayout = () => {
                     {!collapsed && <div className={styles.menuSection}>Projects</div>}
                     <MenuItem icon={<i className="fa-regular fa-folders"></i>} className={styles.MenuItem} onClick={() => navigate("/projects")}>Projects</MenuItem>
 
-                    {userRole === "admin" && (
+                    {/* {userRole === "admin" && (
                         <MenuItem icon={<i className="fas fa-tasks"></i>} className={styles.MenuItem} onClick={() => navigate("/assign-project")}>Assign Project</MenuItem>
-                    )}
+                    )} */}
 
                     {userRole === "admin" && (
                         <MenuItem icon={<i className="fa-regular fa-user-gear"></i>} className={styles.MenuItem} onClick={() => navigate("/services")}>Services</MenuItem>

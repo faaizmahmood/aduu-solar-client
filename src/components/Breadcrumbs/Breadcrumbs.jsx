@@ -32,6 +32,10 @@ const Breadcrumbs = () => {
         pageTitle = "Order Service";
     }
 
+    if (currentPath.startsWith("/projects/assign-staff")) {
+        pageTitle = "Assign Staff";
+    }
+
     return (
         <>
             <nav className={`${styles.breadcrumbs} mb-3`}>

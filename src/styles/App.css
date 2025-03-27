@@ -161,6 +161,9 @@ h5 {
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 550px;
+  max-height: 500px;
+  overflow-y: scroll;
+  scrollbar-width: none;
   z-index: 11;
   text-align: center;
   display: flex;
