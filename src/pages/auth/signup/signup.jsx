@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import styles from './signup.module.scss';
 import logo from '../../../../public/images/AduuSolar_Logo.png';
 import useSignup from './useSignup';
+import { Link } from 'react-router-dom';
 // import { Helmet } from "react-helmet-async";
 
 const Signup = () => {
@@ -112,6 +113,15 @@ const Signup = () => {
                                 {loading ? <PulseLoader color="#ffffff" size={5} /> : "Sign Up"}
                             </button>
                         </div>
+
+                        <div className={styles.signin_link}>
+                            <p>Already have an account? <Link to='/signup'>Sign In</Link></p>
+                        </div>
+
+                        <div className={styles.company_link}>
+                            <p>Want to Register Company? <Link to='/company-register'>Register</Link></p>
+                        </div>
+
                     </form>
                 </div>
             </section>

@@ -1,20 +1,17 @@
-.signup {
-
+.companyAuth {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     min-height: 100vh;
 
-    .loginWrapper {
-
-
-        width: 500px;
-        height: 500px;
+    .authWrapper {
+        width: 50%;
+        height: 600px;
         overflow-y: scroll;
         scrollbar-width: none;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-        padding:20px;
+        padding: 20px;
         border-radius: 10px;
         background-color: transparent;
         background-image: var(--gradient-bg);
@@ -25,12 +22,12 @@
         .logo {
             width: 40%;
             margin: 0px auto;
-            padding-top: 60px;
+            // padding-top: 40px;
         }
 
         .input_group {
             width: 100%;
-            margin: 15px 0px;
+            margin: 10px 0px;
 
             label {
                 color: #ffffff;
@@ -48,6 +45,7 @@
                 font-size: 16px;
                 color: #373737;
                 border-radius: 5px;
+                margin-top: 5px;
             }
 
             .passwordWrapper {
@@ -78,13 +76,12 @@
         }
 
         .form_submit {
-
             button {
                 width: 100%;
                 padding: 10px 0px;
                 border: none;
                 outline: none;
-                margin-top: 5px;
+                margin-top: 10px;
                 border-radius: 5px;
                 font-weight: 600;
                 background-color: #FFCD06;
@@ -98,18 +95,18 @@
             }
         }
 
-        .signin_link{
+        .signin_link {
             color: white;
             width: 100%;
             text-align: center;
             margin-top: 15px;
 
-            p{
+            p {
                 display: flex;
                 justify-content: center;
                 gap: 6px;
 
-                a{
+                a {
                     text-decoration: underline;
                     font-weight: 300 !important;
                     color: white;
@@ -117,7 +114,7 @@
             }
         }
 
-        .company_link{
+        .company_info {
             color: white;
             width: 100%;
             text-align: center;
@@ -126,12 +123,12 @@
             color: gray;
             font-size: 12px;
 
-            p{
+            p {
                 display: flex;
                 justify-content: center;
                 gap: 6px;
 
-                a{
+                a {
                     text-decoration: underline;
                     font-weight: 300 !important;
                     color: white;
@@ -139,5 +136,4 @@
             }
         }
     }
-
 }

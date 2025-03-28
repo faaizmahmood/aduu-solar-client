@@ -4,6 +4,7 @@ import styles from './login.module.scss';
 import logo from '../../../../public/images/AduuSolar_Logo.png';
 import useLogin from './useLogin';
 import { PulseLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 // import { Helmet } from "react-helmet-async";
 
 const Login = () => {
@@ -68,6 +69,10 @@ const Login = () => {
                             <button type='submit' className='filled' disabled={!formik.isValid || formik.isSubmitting}>
                                 {loading ? <PulseLoader color="#ffffff" size={5} /> : "Sign In"}
                             </button>
+                        </div>
+
+                        <div className={styles.signup_link}>
+                            <p>Not an account? <Link to='/signup'>Sign Up</Link></p>
                         </div>
                     </form>
                 </div>

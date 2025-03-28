@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import NProgress from "nprogress";
 import apiService from "../../../utils/apiClient";
+import { useSelector } from "react-redux";
 
 const useProjects = () => {
     const [projects, setProjects] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    const currentUser = useSelector((state) => state.user.user);
 
     // Fetch projects from the backend
     const fetchProjects = async () => {
@@ -39,8 +42,22 @@ const useProjects = () => {
         setLoading(true);
         setError("");
 
+        if (!currentUser?.companyId) {
+            toast.error("Company ID is missing.");
+            setLoading(false);
+            return;
+        }
+
+        const projectPayload = {
+            projectName: values.projectName,
+            siteAddress: values.siteAddress,
+            siteOwner: values.siteOwner,
+            description: "",
+            companyId: currentUser.companyId
+        }
+
         try {
-            const response = await apiService.post("/project/create-project", values);
+            const response = await apiService.post("/project/create-project", projectPayload);
 
             if (response.status >= 200 && response.status < 300) {
                 toast.success("Project Created!");

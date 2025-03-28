@@ -75,14 +75,39 @@ const ProtectedLayout = () => {
                         <MenuItem icon={<i className="fa-regular fa-user-gear"></i>} className={styles.MenuItem} onClick={() => navigate("/services")}>Services</MenuItem>
                     )}
 
-                    <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
+
+                    {userRole === "client" && currentUser?.companyId && currentUser?.companyRole === "owner" && (
+                        <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
+                    )}
+
+
+                    {/* Company Section */}
+
+                    {userRole === "client" && currentUser?.companyId && currentUser?.companyRole === "owner" && (
+                        <>
+                            {!collapsed && <div className={styles.menuSection}>Company</div>}
+                            <MenuItem icon={<i className="fa-regular fa-buildings"></i>} className={styles.MenuItem} onClick={() => navigate("/company")}>Company</MenuItem>
+                        </>
+                    )}
+
 
                     {/* Invoices Section */}
-                    {!collapsed && <div className={styles.menuSection}>Invoices</div>}
-                    <MenuItem icon={<i className="fa-regular fa-file-invoice"></i>} className={styles.MenuItem} onClick={() => navigate("/invoices")}>View Invoices</MenuItem>
-                    {userRole === "admin" && (
-                        <MenuItem icon={<i className="fa-regular fa-file-circle-plus"></i>} className={styles.MenuItem} onClick={() => navigate("/create-invoice")}>Create Invoice</MenuItem>
-                    )}
+
+                    {
+                        userRole === "staff" ? "" : (
+                            <>
+                            < hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
+
+                                {!collapsed && <div className={styles.menuSection}>Invoices</div>}
+                                <MenuItem icon={<i className="fa-regular fa-file-invoice"></i>} className={styles.MenuItem} onClick={() => navigate("/invoices")}>View Invoices</MenuItem>
+                                {userRole === "admin" && (
+                                    <MenuItem icon={<i className="fa-regular fa-file-circle-plus"></i>} className={styles.MenuItem} onClick={() => navigate("/create-invoice")}>Create Invoice</MenuItem>
+                                )}
+                            </>
+                        )
+                    }
+
+
 
                     <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
 

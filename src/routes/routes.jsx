@@ -19,6 +19,8 @@ const Services = lazy(() => import("../pages/admin/services/services.jsx"));
 // Lightweight components (not lazy-loaded)
 import NotFound from "../components/notFound/NotFound.jsx";
 import Loading from "../components/loading/loading.jsx";
+import CompanyAuth from "../pages/auth/companyAuth/companyAuth.jsx";
+import Company from "../pages/user/company/company.jsx";
 
 const ProtectedRoute = ({ element, allowedRoles }) => {
     const authToken = Cookies.get("authToken");
@@ -45,6 +47,7 @@ const AppRoutes = () => {
                     <>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/company-register" element={<CompanyAuth />} />
                         <Route path="*" element={<Navigate to="/login" replace />} />
                     </>
                 ) : (
@@ -52,6 +55,7 @@ const AppRoutes = () => {
                         {/* Redirect Login/Signup if Authenticated */}
                         <Route path="/login" element={<Navigate to="/" replace />} />
                         <Route path="/signup" element={<Navigate to="/" replace />} />
+                        <Route path="/company-register" element={<Navigate to="/" replace />} />
 
                         {/* Redirect Paths*/}
                         <Route path="/project/order-service" element={<Navigate to="/projects" replace />} />
@@ -91,6 +95,8 @@ const AppRoutes = () => {
                         <Route path="/profile" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin", "staff", "client"]} />} />
 
                         <Route path="/manage-team" element={<ProtectedRoute element={<ManageTeam />} allowedRoles={["admin"]} />} />
+
+                        <Route path="/company" element={<ProtectedRoute element={<Company />} allowedRoles={["client"]} />} />
 
                         {/* Catch-All Route for Authenticated Users */}
                         <Route path="*" element={<NotFound />} />
