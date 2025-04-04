@@ -15,7 +15,8 @@ const AssignProject = () => {
     handleSelectStaff,
     handleAssignStaff,
     selectedStaff,
-    setSelectedStaff
+    setSelectedStaff,
+    invoiceStatus
   } = useAssignProjects();
 
 
@@ -25,6 +26,22 @@ const AssignProject = () => {
         <Loading />
       ) : (
         <section className={`${styles.assignProject} mt-4`}>
+
+          {(invoiceStatus === "Pending Payment" || invoiceStatus === "Overdue") && (
+            <motion.div
+              className={`${styles.paymentWarning} text-center mb-3`}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              ⚠️ <strong>Payment Issue Detected:</strong> Staff cannot be assigned until payment is cleared.
+              <br />
+              {/* <a href="/billing" className="text-primary fw-bold">Go to Billing →</a> */}
+            </motion.div>
+          )}
+
+
+
           <div className="row">
             {/* Left Side: Project Details */}
             <div className={`col-md-6 p-2`}>

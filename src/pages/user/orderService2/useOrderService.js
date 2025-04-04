@@ -13,6 +13,7 @@ const useOrderService = () => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
     const [isIntakeFormActive, setIsIntakeFormActive] = useState(false);
+    const [isInvoiceStepActive, setIsInvoiceStepActive] = useState(false);
     const currentUser = useSelector((state) => state.user.user)
     const { projectID } = useParams();
     const navigate = useNavigate()
@@ -47,13 +48,20 @@ const useOrderService = () => {
 
     const handleNextForm = () => {
         if (!validateForm(selectedServices[currentFormIndex]._id)) return;
+
         if (currentFormIndex < selectedServices.length - 1) {
             setCurrentFormIndex((prev) => prev + 1);
+        } else {
+            setIsInvoiceStepActive(true);  // Activate invoice step
+            console.log("Invoice step activated");
         }
     };
 
+
     const handlePrevForm = () => {
-        if (currentFormIndex > 0) {
+        if (isInvoiceStepActive) {
+            setIsInvoiceStepActive(false);
+        } else if (currentFormIndex > 0) {
             setCurrentFormIndex((prev) => prev - 1);
         }
     };
@@ -120,8 +128,7 @@ const useOrderService = () => {
             const response = await apiService.post("/service/order-service", orderPayload);
             if (response.status === 201) {
                 toast.success("Order submitted successfully!");
-                navigate('/projects');
-                // location.reload()
+                generateInvoice(response.data.order._id);
             }
         } catch (error) {
             console.error("Error submitting order:", error);
@@ -130,6 +137,37 @@ const useOrderService = () => {
             NProgress.done();
         }
     };
+
+
+    const generateInvoice = async (orderId) => {
+        const invoicePayload = {
+            orderId,
+            clientId: currentUser._id,
+            projectId: projectID,
+            companyId: currentUser.companyId,
+            totalAmount: selectedServices.reduce((sum, service) => sum + service.defaultPrice, 0),
+            services: selectedServices.map((service) => ({
+                serviceId: service._id,
+                serviceName: service.serviceName,
+                price: service.defaultPrice,
+            })),
+            status: "Pending Payment",
+            dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+            paidAt: null
+        };
+
+        try {
+            const response = await apiService.post("/invoice/create-invoice", invoicePayload);
+            if (response.status === 201) {
+                toast.success("Invoice generated successfully!");
+                navigate("/invoices");
+            }
+        } catch (error) {
+            console.error("Error generating invoice:", error);
+            toast.error(error.response?.data?.message || "Failed to generate invoice.");
+        }
+    };
+
 
 
     return {
@@ -145,7 +183,9 @@ const useOrderService = () => {
         handleFormChange,
         errors,
         isIntakeFormActive,
-        setIsIntakeFormActive
+        setIsIntakeFormActive,
+        isInvoiceStepActive,
+        setIsInvoiceStepActive
     };
 };
 

@@ -100,9 +100,9 @@ const ProtectedLayout = () => {
 
                                 {!collapsed && <div className={styles.menuSection}>Invoices</div>}
                                 <MenuItem icon={<i className="fa-regular fa-file-invoice"></i>} className={styles.MenuItem} onClick={() => navigate("/invoices")}>View Invoices</MenuItem>
-                                {userRole === "admin" && (
+                                {/* {userRole === "admin" && (
                                     <MenuItem icon={<i className="fa-regular fa-file-circle-plus"></i>} className={styles.MenuItem} onClick={() => navigate("/create-invoice")}>Create Invoice</MenuItem>
-                                )}
+                                )} */}
                             </>
                         )
                     }

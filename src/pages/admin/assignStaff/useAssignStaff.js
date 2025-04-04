@@ -10,11 +10,10 @@ const useAssignProjects = () => {
     const [project, setProject] = useState(null);
     const [staffList, setStaffList] = useState([]);
     const [error, setError] = useState(null);
-
+    const [invoiceStatus, setInvoiceStatus] = useState(null);
     const [selectedStaff, setSelectedStaff] = useState([]);
 
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProjectAndStaff = async () => {
@@ -30,39 +29,35 @@ const useAssignProjects = () => {
                 if (projectResponse.status === 200) {
                     setProject(projectResponse.data.project);
                 } else {
-                    toast.error("Failed to fetch project details");
-                    setError("Failed to fetch project details");
+                    throw new Error("Failed to fetch project details");
                 }
 
                 // Fetch staff list
                 const staffResponse = await apiService.get(`/get/all-staff`);
                 if (staffResponse.status === 200) {
-
                     const formattedStaff = staffResponse.data.staff.map((staff) => ({
-                        _id: staff._id, // Use MongoDB ID as unique identifier
+                        _id: staff._id,
                         name: staff.name,
-                        role: staff.workingRole || "Not Assigned", // Handle null role
+                        role: staff.workingRole || "Not Assigned",
                         email: staff.email,
                         phone: staff.phone,
                         status: staff.status,
-                        projectsAssigned: staff.projectAssigned || 0, // Fixed typo
-                        dateAdded: new Date(staff.createdAt).toISOString().split("T")[0], // Format date
+                        projectsAssigned: staff.projectAssigned || 0,
+                        dateAdded: new Date(staff.createdAt).toISOString().split("T")[0],
                     }));
 
-                    const ActiveStaff = formattedStaff.filter((member) => {
-                        return member.status === "Active"
-                    })
-
-                    setStaffList(ActiveStaff || []);
+                    const activeStaff = formattedStaff.filter((member) => member.status === "Active");
+                    setStaffList(activeStaff || []);
                 } else {
-                    toast.error("Failed to fetch staff list");
-                    setError("Failed to fetch staff list");
+                    throw new Error("Failed to fetch staff list");
                 }
+
+                setInvoiceStatus(projectResponse.data.invocie.status);
 
             } catch (error) {
                 console.error("Error fetching data:", error);
-                toast.error("Internal Server Error");
-                setError("Internal Server Error");
+                toast.error(error.message || "Internal Server Error");
+                setError(error.message);
             } finally {
                 setLoading(false);
                 NProgress.done();
@@ -83,15 +78,11 @@ const useAssignProjects = () => {
         }
     };
 
-    // Toggle staff selection (ensuring UI changes correctly)
+    // Toggle staff selection
     const handleSelectStaff = (staff) => {
         setSelectedStaff((prev) => {
             const isAlreadySelected = prev.find((s) => s._id === staff._id);
-            if (isAlreadySelected) {
-                return prev.filter((s) => s._id !== staff._id); // Remove if already selected
-            } else {
-                return [...prev, staff]; // Add if not selected
-            }
+            return isAlreadySelected ? prev.filter((s) => s._id !== staff._id) : [...prev, staff];
         });
     };
 
@@ -101,13 +92,17 @@ const useAssignProjects = () => {
             return;
         }
 
-        // ✅ Check if project exists
+        // ✅ Restrict assignment if invoice status is "Pending Payment" or Overdue
+        if (invoiceStatus === "Pending Payment" || invoiceStatus === "Overdue") {
+            toast.error("Cannot assign staff. Invoice is pending payment or overdue.");
+            return;
+        }
+
         if (!project) {
             toast.error("Project data is not available.");
             return;
         }
 
-        // ✅ Filter out staff members that are already assigned
         const assignedStaffIds = new Set(project.assignedStaff?.map(staff => staff._id) || []);
         const newStaff = selectedStaff.filter(staff => !assignedStaffIds.has(staff._id));
 
@@ -120,34 +115,30 @@ const useAssignProjects = () => {
             NProgress.start();
 
             const payload = {
-                projectId: project._id,  // Ensure project ID is included
-                staffIds: newStaff.map(staff => staff._id) // Only send new staff IDs
+                projectId: project._id,
+                staffIds: newStaff.map(staff => staff._id),
             };
 
             const response = await apiService.post("/staff/assign-staff", payload);
 
             if (response.status === 200) {
                 toast.success("Staff assigned successfully!");
-
-                // ✅ Update project state with new assigned staff
                 setProject((prev) => ({
                     ...prev,
-                    assignedStaff: [...prev.assignedStaff, ...newStaff] // Add only new staff
+                    assignedStaff: [...prev.assignedStaff, ...newStaff],
                 }));
-
-                setSelectedStaff([]); // Clear selection after successful assignment
-                navigate('/projects')
+                setSelectedStaff([]);
+                navigate('/projects');
             } else {
-                toast.error(response.data.message || "Failed to assign staff.");
+                throw new Error(response.data.message || "Failed to assign staff.");
             }
         } catch (error) {
             console.error("Error assigning staff:", error);
-            toast.error("Internal server error.");
+            toast.error(error.message || "Internal server error.");
         } finally {
             NProgress.done();
         }
     };
-
 
     return {
         project,
@@ -155,6 +146,7 @@ const useAssignProjects = () => {
         loading,
         error,
         isValidUrl,
+        invoiceStatus,
         handleSelectStaff,
         handleAssignStaff,
         selectedStaff,

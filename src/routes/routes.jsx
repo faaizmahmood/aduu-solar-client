@@ -21,6 +21,7 @@ import NotFound from "../components/notFound/NotFound.jsx";
 import Loading from "../components/loading/loading.jsx";
 import CompanyAuth from "../pages/auth/companyAuth/companyAuth.jsx";
 import Company from "../pages/user/company/company.jsx";
+import Invoices from "../pages/sharedPages/invoices/invoices.jsx";
 
 const ProtectedRoute = ({ element, allowedRoles }) => {
     const authToken = Cookies.get("authToken");
@@ -86,9 +87,9 @@ const AppRoutes = () => {
 
                         <Route path="/services" element={<ProtectedRoute element={<Services />} allowedRoles={["admin"]} />} />
 
-                        <Route path="/invoices" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin", "client"]} />} />
+                        <Route path="/invoices" element={<ProtectedRoute element={<Invoices/>} allowedRoles={["admin", "client"]} />} />
 
-                        <Route path="/create-invoice" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin"]} />} />
+                        {/* <Route path="/create-invoice" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin"]} />} /> */}
 
                         <Route path="/settings" element={<ProtectedRoute element={"Commin Soon"} allowedRoles={["admin", "staff", "client"]} />} />
 

@@ -42,18 +42,18 @@ const useProjects = () => {
         setLoading(true);
         setError("");
 
-        if (!currentUser?.companyId) {
-            toast.error("Company ID is missing.");
-            setLoading(false);
-            return;
-        }
+        // if (!currentUser?.companyId) {
+        //     toast.error("Company ID is missing.");
+        //     setLoading(false);
+        //     return;
+        // }
 
         const projectPayload = {
             projectName: values.projectName,
             siteAddress: values.siteAddress,
             siteOwner: values.siteOwner,
             description: "",
-            companyId: currentUser.companyId
+            companyId: currentUser.companyId || null
         }
 
         try {

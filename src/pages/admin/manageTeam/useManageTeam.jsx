@@ -24,7 +24,7 @@ const useManageTeam = () => {
                     email: staff.email,
                     phone: staff.phone,
                     status: staff.status,
-                    projectsAssigned: staff.projectAssigned || 0, // Fixed typo
+                    projectsAssigned: staff.projectsAssigned.length || 0, // Fixed typo
                     dateAdded: new Date(staff.createdAt).toISOString().split("T")[0], // Format date
                 }));
 
