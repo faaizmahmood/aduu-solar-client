@@ -14,7 +14,7 @@ const useManageTeam = () => {
         const fetchStaff = async () => {
             setLoading(true);
             try {
-                const response = await apiService.get("/get/all-staff");
+                const response = await apiService.get("/staff/all-staff");
 
                 // Transform API response to match DataGrid format
                 const formattedStaff = response.data.staff.map((staff) => ({
@@ -51,7 +51,7 @@ const useManageTeam = () => {
     const addStaff = async (newStaff) => {
         setLoading(true);
         try {
-            const response = await apiService.post("/add/add-staff", newStaff);
+            const response = await apiService.post("/staff/add-staff", newStaff);
 
             toast.success(response.data.message || "Staff member added successfully!");
 

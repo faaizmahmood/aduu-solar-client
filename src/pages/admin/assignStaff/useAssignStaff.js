@@ -33,7 +33,7 @@ const useAssignProjects = () => {
                 }
 
                 // Fetch staff list
-                const staffResponse = await apiService.get(`/get/all-staff`);
+                const staffResponse = await apiService.get(`/staff/all-staff`);
                 if (staffResponse.status === 200) {
                     const formattedStaff = staffResponse.data.staff.map((staff) => ({
                         _id: staff._id,

@@ -1,52 +1,99 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import AppRoutes from "../routes/routes";
-import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs"; // Import Breadcrumbs
+import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs";
 import styles from "./layout.module.scss";
-import Logo from '../../public/images/AduuSolar_Logo.png'
+import Logo from '../../public/images/AduuSolar_Logo.png';
 
 const ProtectedLayout = () => {
     const [collapsed, setCollapsed] = useState(window.innerWidth <= 768);
     const [mobileView, setMobileView] = useState(window.innerWidth <= 768);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const handleResize = () => {
-            setMobileView(window.innerWidth <= 768);
-            if (window.innerWidth > 768) {
-                setCollapsed(false);
-            }
+            const isMobile = window.innerWidth <= 768;
+            setMobileView(isMobile);
+            if (!isMobile) setCollapsed(false);
         };
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const authToken = Cookies.get("authToken");
-    const { user } = useSelector((state) => state.user);
+    const reduxuser = useSelector((state) => state.user.user);
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    const currentUser = user || storedUser;
+    const currentUser = reduxuser || storedUser;
     const userRole = currentUser?.role || "";
+    const isCompanyOwner = currentUser?.companyRole === "owner" && Boolean(currentUser?.companyId);
 
     const handleLogout = () => {
         Cookies.remove("authToken");
         localStorage.removeItem("user");
-        location.reload();
-        navigate("/login");
+        window.location.href = "/login"; // Force full reload and redirect
     };
 
+    const isActive = (path) => location.pathname === path;
+
+    const menuItems = [
+        {
+            section: "Dashboard",
+            items: [
+                { label: "Home", icon: "fa-home", path: "/" },
+            ]
+        },
+        {
+            section: "Projects",
+            items: [
+                { label: "Projects", icon: "fa-folders", path: "/projects" },
+            ]
+        },
+        {
+            section: "Company",
+            show: userRole === "client" && isCompanyOwner,
+            items: [
+                { label: "Company", icon: "fa-buildings", path: "/company" },
+            ]
+        },
+        {
+            section: "Services",
+            show: userRole === "admin",
+            items: [
+                { label: "Services", icon: "fa-user-gear", path: "/services" },
+            ]
+        },
+        {
+            section: "Invoices",
+            show: userRole !== "staff",
+            items: [
+                { label: "View Invoices", icon: "fa-file-invoice", path: "/invoices" },
+            ]
+        },
+        {
+            section: "Account",
+            items: [
+                { label: "Profile", icon: "fa-user", path: "/profile" },
+                { label: "Settings", icon: "fa-gear", path: "/settings" },
+                ...(userRole === "admin" ? [
+                    { label: "Manage Team", icon: "fa-users", path: "/manage-team" }
+                ] : [])
+            ]
+        }
+    ];
+
     return (
-        <div style={{ display: "flex", height: "100vh" }} className={styles.appLayout}>
+        <div className={styles.appLayout} style={{ display: "flex", height: "100vh" }}>
             {mobileView && (
                 <button className={styles.mobileMenuButton} onClick={() => setCollapsed(!collapsed)}>
                     <i className="fas fa-bars"></i>
                 </button>
-            )}
+            )}  
 
-            {/* Sidebar */}
             <Sidebar
                 collapsed={collapsed}
                 transitionDuration={500}
@@ -54,81 +101,55 @@ const ProtectedLayout = () => {
                 className={`${styles.sidebar} ${mobileView && !collapsed ? styles.mobileSidebar : ""}`}
             >
                 <Menu>
-                    <MenuItem className={`${styles.menueCollapser}`} icon={<i className="fas fa-bars" style={{ color: "#fff" }}></i>} onClick={() => setCollapsed(!collapsed)}>
-                        {collapsed ? "" : <img alt="Logo" className={`${styles.logo}`} src={Logo} />}
+                    <MenuItem
+                        className={styles.menueCollapser}
+                        icon={<i className="fas fa-bars" style={{ color: "#fff" }} />}
+                        onClick={() => setCollapsed(!collapsed)}
+                    >
+                        {!collapsed && <img alt="Logo" className={styles.logo} src={Logo} />}
                     </MenuItem>
 
-                    {!collapsed && <div className={styles.menuSection}>Dashboard</div>}
-                    <MenuItem icon={<i className="fas fa-home"></i>} className={`${styles.MenuItem} ${collapsed ? "mt-2" : ""}`} onClick={() => navigate("/")}>Home</MenuItem>
-
-                    <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
-
-                    {/* Projects Section */}
-                    {!collapsed && <div className={styles.menuSection}>Projects</div>}
-                    <MenuItem icon={<i className="fa-regular fa-folders"></i>} className={styles.MenuItem} onClick={() => navigate("/projects")}>Projects</MenuItem>
-
-                    {/* {userRole === "admin" && (
-                        <MenuItem icon={<i className="fas fa-tasks"></i>} className={styles.MenuItem} onClick={() => navigate("/assign-project")}>Assign Project</MenuItem>
-                    )} */}
-
-                    {userRole === "admin" && (
-                        <MenuItem icon={<i className="fa-regular fa-user-gear"></i>} className={styles.MenuItem} onClick={() => navigate("/services")}>Services</MenuItem>
-                    )}
-
-
-                    {userRole === "client" && currentUser?.companyId && currentUser?.companyRole === "owner" && (
-                        <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
-                    )}
-
-
-                    {/* Company Section */}
-
-                    {userRole === "client" && currentUser?.companyId && currentUser?.companyRole === "owner" && (
-                        <>
-                            {!collapsed && <div className={styles.menuSection}>Company</div>}
-                            <MenuItem icon={<i className="fa-regular fa-buildings"></i>} className={styles.MenuItem} onClick={() => navigate("/company")}>Company</MenuItem>
-                        </>
-                    )}
-
-
-                    {/* Invoices Section */}
-
-                    {
-                        userRole === "staff" ? "" : (
-                            <>
-                            < hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
-
-                                {!collapsed && <div className={styles.menuSection}>Invoices</div>}
-                                <MenuItem icon={<i className="fa-regular fa-file-invoice"></i>} className={styles.MenuItem} onClick={() => navigate("/invoices")}>View Invoices</MenuItem>
-                                {/* {userRole === "admin" && (
-                                    <MenuItem icon={<i className="fa-regular fa-file-circle-plus"></i>} className={styles.MenuItem} onClick={() => navigate("/create-invoice")}>Create Invoice</MenuItem>
-                                )} */}
-                            </>
+                    {menuItems.map((section, idx) => (
+                        section.show !== false && (
+                            <div key={idx}>
+                                {!collapsed && <div className={styles.menuSection}>{section.section}</div>}
+                                {section.items.map(({ label, icon, path }) => (
+                                    <MenuItem
+                                        key={path}
+                                        icon={
+                                            <i className={`fa-regular ${icon}`} style={{ fontWeight: isActive(path) ? "bold" : "normal", fontSize: isActive(path) ? "16px" : "" }} />
+                                        }
+                                        className={`${styles.MenuItem} ${isActive(path) ? styles.activeMenuItem : ""}`}
+                                        onClick={() => navigate(path)}
+                                    >
+                                        {label}
+                                    </MenuItem>
+                                ))}
+                                <hr className={`${styles.divider} ${collapsed ? styles.collapsedDivider : ""}`} />
+                            </div>
                         )
-                    }
+                    ))}
 
-
-
-                    <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
-
-                    {/* Account Section */}
-                    {!collapsed && <div className={styles.menuSection}>Account</div>}
-                    <MenuItem icon={<i className="fa-regular fa-user"></i>} className={styles.MenuItem} onClick={() => navigate("/profile")}>Profile</MenuItem>
-                    <MenuItem icon={<i className="fa-regular fa-gear"></i>} className={styles.MenuItem} onClick={() => navigate("/settings")}>Settings</MenuItem>
-                    {userRole === "admin" && (
-                        <MenuItem icon={<i className="fa-regular fa-users"></i>} className={styles.MenuItem} onClick={() => navigate("/manage-team")}>Manage Team</MenuItem>
-                    )}
-
-                    <hr className={`${styles.divider} ${collapsed ? `${styles.collapsedDivider}` : ""}`} />
-
-                    {/* Logout Section */}
-                    <MenuItem icon={<i className="fa-regular fa-right-from-bracket"></i>} className={styles.MenuItem} onClick={handleLogout}>Logout</MenuItem>
+                    <MenuItem
+                        icon={<i className="fa-regular fa-right-from-bracket" />}
+                        className={styles.MenuItem}
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </MenuItem>
                 </Menu>
             </Sidebar>
 
-            {/* Main Content */}
-            <main style={{ flexGrow: 1, padding: "20px", backgroundColor: '#F6F6F6', overflow: 'scroll', scrollbarWidth: 'none' }}>
-                <Breadcrumbs />  {/* Add Breadcrumbs here */}
+            <main
+                style={{
+                    flexGrow: 1,
+                    padding: "20px",
+                    backgroundColor: '#F6F6F6',
+                    overflow: 'auto',
+                    scrollbarWidth: 'none'
+                }}
+            >
+                <Breadcrumbs />
                 <AppRoutes />
             </main>
         </div>

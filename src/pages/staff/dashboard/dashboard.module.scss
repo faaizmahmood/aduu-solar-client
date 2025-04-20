@@ -1,0 +1,35 @@
+.dashboard {
+
+    .cardItem {
+        background-color: rgb(255, 255, 255);
+        min-height: 100px;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        height: 100%;
+        color: var(--primary-color);
+
+        i {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .recentActivityCard {
+        background-color: rgb(255, 255, 255);
+        min-height: 100px;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        height: 100%;
+        overflow-y: scroll;
+        scrollbar-width: none;
+
+        h5{
+            line-height: 20px !important;
+            i{
+                font-size: 16px;
+            }
+        }
+    }
+}

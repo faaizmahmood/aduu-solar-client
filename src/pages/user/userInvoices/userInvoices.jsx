@@ -2,6 +2,7 @@ import Loading from '../../../components/loading/loading';
 import styles from './userInvoices.module.scss';
 import useUserInvoice from './useUserInvoicesInvoices';
 import Model from '../../../components/model/model';
+import { useSelector } from 'react-redux';
 
 const getStatusStyles = (status) => {
     switch (status) {
@@ -26,6 +27,8 @@ const UserInvoices = () => {
         handleOpen,
         handleMarkAsPaid
     } = useUserInvoice();
+
+    const currentUser = useSelector((state) => state.user.user)
 
     return (
         <>
@@ -55,6 +58,7 @@ const UserInvoices = () => {
                                     </div>
                                 );
                             })
+
                         )}
                     </div>
                 </section>
@@ -79,12 +83,18 @@ const UserInvoices = () => {
                                 ))}
                             </ul>
 
+
                             {/* Mark as Paid Button (only for Pending/Overdue invoices) */}
-                            {(selectedInvoice.status === "Pending Payment" || selectedInvoice.status === "Overdue") && (
-                                <button className="simple-btn mt-3" onClick={() => handleMarkAsPaid(selectedInvoice._id)}>
-                                    Mark as Paid
-                                </button>
+
+                            {currentUser?.role === 'admin' && (
+                                (selectedInvoice.status === "Pending Payment" || selectedInvoice.status === "Overdue") && (
+                                    <button className="simple-btn mt-3" onClick={() => handleMarkAsPaid(selectedInvoice._id)}>
+                                        Mark as Paid
+                                    </button>
+                                )
                             )}
+
+
                         </div>
                     </div>
                 </Model>

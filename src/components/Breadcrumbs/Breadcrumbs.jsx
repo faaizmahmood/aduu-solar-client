@@ -1,18 +1,23 @@
 import { Link, useLocation } from "react-router-dom";
 import useBreadcrumbs from "use-react-router-breadcrumbs";
-import styles from "./breadcrumbs.module.scss";
 import { useSelector } from "react-redux";
+import styles from "./breadcrumbs.module.scss";
 
-// Define custom breadcrumbs for specific paths
+// Custom breadcrumb routes
 const routes = [
     { path: "/", breadcrumb: "Dashboard" },
     { path: "/profile", breadcrumb: "My Profile" },
     { path: "/projects", breadcrumb: "My Projects" },
     { path: "/services", breadcrumb: "Services" },
-    { path: "/services/add-service", breadcrumb: "Add Service" }, // Nested under "Services"
+    { path: "/services/add-service", breadcrumb: "Add Service" },
     { path: "/services/edit-service/:serviceId", breadcrumb: "Edit Service" },
-    { path: "/projects/project-details/:serviceId", breadcrumb: "Project Details" },
-    // { path: "/project/order-service/:ProjectID", breadcrumb: "Order Service" },
+];
+
+const customTitles = [
+    { path: "/services/edit-service/", title: "Edit Service" },
+    { path: "/project/order-service/", title: "Order Service" },
+    { path: "/projects/assign-staff", title: "Assign Staff" },
+    { path: "/projects/project-details", title: "Project Details" },
 ];
 
 const Breadcrumbs = () => {
@@ -22,19 +27,20 @@ const Breadcrumbs = () => {
 
     const currentPath = location.pathname;
 
+    // Determine dynamic page title
     let pageTitle = breadcrumbs[breadcrumbs.length - 1]?.breadcrumb || "Page";
 
-    if (currentPath.startsWith("/services/edit-service/")) {
-        pageTitle = "Edit Service";
+    for (const item of customTitles) {
+        if (currentPath.startsWith(item.path)) {
+            pageTitle = item.title;
+            break;
+        }
     }
 
-    if (currentPath.startsWith("/project/order-service/")) {
-        pageTitle = "Order Service";
-    }
-
-    if (currentPath.startsWith("/projects/assign-staff")) {
-        pageTitle = "Assign Staff";
-    }
+    const greeting =
+        currentPath === "/" && user?.name
+            ? `Hi ${user.name.split(" ")[0]}, welcome back 👋`
+            : pageTitle;
 
     return (
         <>
@@ -45,8 +51,9 @@ const Breadcrumbs = () => {
                             {index > 0 && <span className="mx-1">/</span>}
                             <Link
                                 to={match.pathname}
-                                className={`text-blue-500 hover:underline capitalize ${location.pathname === match.pathname ? "font-bold" : ""
-                                    }`}
+                                className={`text-blue-500 hover:underline capitalize ${
+                                    currentPath === match.pathname ? "font-bold" : ""
+                                }`}
                             >
                                 {breadcrumb}
                             </Link>
@@ -55,11 +62,7 @@ const Breadcrumbs = () => {
                 </ul>
             </nav>
 
-            <h3>
-                {location.pathname === "/" && user?.name
-                    ? `Welcome, ${user.name}`
-                    : pageTitle}
-            </h3>
+            <h3 className="text-xl font-semibold">{greeting}</h3>
         </>
     );
 };

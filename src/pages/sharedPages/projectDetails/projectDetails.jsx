@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import styles from './projectDetails.module.scss'
 import AdminProjectDetails from '../../admin/projectDetails/projectDetails'
+import UserProjectDetails from '../../user/projectDetails/projectDetails'
 
 const ProjectDetails = () => {
 
@@ -10,7 +11,8 @@ const ProjectDetails = () => {
         <>
 
             <section className={`${styles.projectDetails}`}>
-                {currentUser?.role && <AdminProjectDetails />}
+                {currentUser?.role === "Admin" && <AdminProjectDetails />}
+                {currentUser?.role === "staff" || currentUser?.role === "client" && <UserProjectDetails />}
             </section>
 
         </>

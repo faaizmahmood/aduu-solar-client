@@ -1,0 +1,101 @@
+.messaging {
+    height: 400px;
+    padding: 10px 10px 0px 10px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    .chatBox {
+        flex: 1; // Take up remaining space
+        overflow-y: auto; // Allow scrolling if content overflows
+        margin-bottom: 10px; // Optional space above the input
+    }
+
+    .inputRow {
+        // This will stay at the bottom
+        //   display: flex;
+        //   align-items: center;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        padding: 15px;
+        border-radius: 10px 10px 0px 0px;
+
+        i {
+            cursor: pointer;
+        }
+
+        input {
+            flex: 1;
+            padding: 0 !important;
+            background-color: transparent;
+            border: none !important;
+            outline: none;
+            box-shadow: none !important;
+            width: 100%;
+        }
+
+        input:not([type="checkbox"]):not([type="radio"]):not([type="file"]){
+            padding: 0px !important;
+        }
+
+        .sendBtn {
+            color: var(--primary-color);
+        }
+
+        .uploadedMedia {
+            margin-top: 10px;
+
+            .preview {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                background: #f8f8f8;
+                padding: 8px 12px;
+                border-radius: 8px;
+                position: relative;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    object-fit: cover;
+                    border-radius: 6px;
+                    border: 1px solid #ddd;
+                }
+
+                .fileInfo {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 14px;
+
+                    i {
+                        font-size: 18px;
+                    }
+                }
+
+                i {
+                    position: absolute;
+                    left: 10px;
+                    top: 6px;
+                    cursor: pointer;
+                    color: var(--primary-color);
+                    font-size: 14px;
+                    background-color: white;
+                    padding: 4px 5px;
+                    border-radius: 50%;
+                    font-size: 10px;
+                    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+                    transition: all 0.5s;
+
+                    &:hover {
+
+                        color: red;
+                    }
+                }
+            }
+        }
+
+
+    }
+}

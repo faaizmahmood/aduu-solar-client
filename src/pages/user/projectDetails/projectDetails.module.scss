@@ -1,0 +1,36 @@
+.projectDetails {
+
+
+    .projectDetailsBanner {
+
+        min-height: 220px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: var(--primary-color);
+        position: relative;
+
+
+        .tabs {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+
+            a {
+                padding: 5px;
+                text-decoration: none;
+                color: white;
+                border-bottom: 2px solid transparent;
+                transition: border-color 0.7s;
+
+                &.activeTab {
+                    border-bottom-color: white;
+                    font-weight: bold;
+                }
+            }
+        }
+
+
+    }
+}
