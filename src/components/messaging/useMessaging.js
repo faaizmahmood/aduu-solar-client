@@ -1,23 +1,65 @@
 // src/hooks/useMessaging.js
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import socket from "../../utils/socket";
 import s3UploadFile from "../../utils/s3Upload";// make sure this path is correct
+import apiService from '../../utils/apiClient'
 
 const useMessaging = (projectId, user) => {
     const [messages, setMessages] = useState([]);
+
     const [newMsg, setNewMsg] = useState("");
+
     const [uploading, setUploading] = useState(false);
 
     const [fileUrl, setFileUrl] = useState(null); // uploaded file
+
     const [fileName, setFileName] = useState(""); // show file name
+
+    const bottomRef = useRef(null);
+
+    const fileInputRef = useRef(null);
+
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+    // Emit 'updateLastReadMessage' when a new message arrives or when user scrolls to bottom
+    useEffect(() => {
+        if (messages.length > 0) {
+            const payload = {
+                projectId,
+                userId: user?._id,
+                userType: user.role === 'client' || user.role === 'admin' ? 'simple' : "staff"
+            };
+            // Emit update when a new message is received
+            socket.emit("updateLastReadMessage", payload);
+        }
+    }, [messages, projectId, user?._id, user.role]);
+
+    useEffect(() => {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
+
 
     useEffect(() => {
         if (!projectId) return;
 
+
+        const fetchMessages = async () => {
+            try {
+                const res = await apiService.get(`/message/${projectId}`);
+                setMessages(res.data || []); // depends on your response format
+            } catch (error) {
+                console.error("Failed to fetch messages:", error);
+            }
+        };
+
+        fetchMessages();
+
         socket.emit("joinProject", projectId);
 
         socket.on("receiveMessage", (msg) => {
-            setMessages((prev) => [...prev, msg]);
+            setMessages((prev) => [...prev, { ...msg, status: 'sent' }]);
         });
 
         return () => {
@@ -26,7 +68,6 @@ const useMessaging = (projectId, user) => {
     }, [projectId]);
 
     const handleFileUpload = async (file) => {
-        alert("hi")
         if (!file) return;
         try {
             console.log("Uploading file:", file); // ✅ Debug: show file
@@ -41,32 +82,85 @@ const useMessaging = (projectId, user) => {
             setUploading(false);
         }
     };
-    
+
 
     const removeFile = () => {
         setFileUrl(null);
         setFileName("");
     };
 
-    const sendMessage = () => {
+    const sendMessage = (e) => {
+
+        e.preventDefault()
+
         if (!newMsg.trim() && !fileUrl) return;
+
+        const tempId = Date.now();
 
         const msgData = {
             sender: user.name,
             senderId: user._id,
             text: newMsg,
             file: fileUrl,
-            timestamp: new Date(),
             projectId,
+            createdAt: new Date().toISOString(),
+            status: 'sending',
         };
 
-        socket.emit("sendMessage", msgData);
-        setMessages((prev) => [...prev, msgData]);
+        // Optimistic UI
+        // setMessages((prev) => [...prev, msgData]);
 
-        // reset
+        // Reset input
         setNewMsg("");
         setFileUrl(null);
         setFileName("");
+
+        // Emit to server
+        socket.emit("sendMessage", msgData, (ack) => {
+            if (ack?.success) {
+                setMessages((prev) =>
+                    prev.map((msg) =>
+                        msg._id === tempId ? { ...msg, status: 'sent' } : msg
+                    )
+                );
+            } else {
+                setMessages((prev) =>
+                    prev.map((msg) =>
+                        msg._id === tempId ? { ...msg, status: 'failed' } : msg
+                    )
+                );
+            }
+        });
+    };
+
+
+    const retryMessage = (msg) => {
+        socket.emit("sendMessage", msg, (ack) => {
+            if (ack?.success) {
+                setMessages((prev) =>
+                    prev.map((m) => (m._id === msg._id ? { ...m, status: 'sent' } : m))
+                );
+            } else {
+                setMessages((prev) =>
+                    prev.map((m) => (m._id === msg._id ? { ...m, status: 'failed' } : m))
+                );
+            }
+        });
+
+        // Update status to 'sending' temporarily
+        setMessages((prev) =>
+            prev.map((m) => (m._id === msg._id ? { ...m, status: 'sending' } : m))
+        );
+    };
+
+
+
+    const handleEmojiClick = (emojiData) => {
+        setNewMsg((prev) => prev + emojiData.emoji);
+    };
+
+    const handleFileIconClick = () => {
+        if (fileInputRef.current) fileInputRef.current.click();
     };
 
     return {
@@ -78,7 +172,14 @@ const useMessaging = (projectId, user) => {
         handleFileUpload,
         fileUrl,
         fileName,
-        removeFile
+        removeFile,
+        bottomRef,
+        fileInputRef,
+        handleFileIconClick,
+        handleEmojiClick,
+        showEmojiPicker,
+        setShowEmojiPicker,
+        retryMessage
     };
 };
 

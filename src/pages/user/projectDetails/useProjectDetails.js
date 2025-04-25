@@ -7,6 +7,7 @@ const useProjectDetails = () => {
     const { projectID } = useParams();
     const [projectData, setProjectData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [unauthorized, setUnauthorized] = useState(false);
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -14,7 +15,11 @@ const useProjectDetails = () => {
                 const response = await apiService.get(`/project/get-single-project/${projectID}`);
                 setProjectData(response.data);
             } catch (err) {
-                toast.error(err.message || "Something went wrong");
+                if (err.response?.status === 403) {
+                    setUnauthorized(true);
+                } else {
+                    toast.error(err.message || "Something went wrong");
+                }
             } finally {
                 setLoading(false);
             }
@@ -23,7 +28,7 @@ const useProjectDetails = () => {
         fetchProject();
     }, [projectID]);
 
-    return { projectData, loading };
+    return { projectData, loading, unauthorized };
 };
 
 export default useProjectDetails;

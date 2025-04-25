@@ -27,18 +27,34 @@ const ProjectOverview = () => {
                                                 <h5>
                                                     <b>{response.fieldName}: </b>
                                                     {typeof response.fieldValue === "string" &&
-                                                    response.fieldValue.startsWith("http") ? (
-                                                        <a
-                                                            href={response.fieldValue}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className={styles.link}
-                                                        >
-                                                            {response.fieldValue}
-                                                        </a>
+                                                        response.fieldValue.startsWith("http") ? (
+                                                        <div className={styles.filePreview}>
+                                                            {/* If it's an image */}
+                                                            {/\.(jpeg|jpg|png|gif)$/i.test(response.fieldValue) ? (
+                                                                <img
+                                                                    src={response.fieldValue}
+                                                                    alt="Uploaded File"
+                                                                    className={styles.imagePreview}
+                                                                />
+                                                            ) : (
+                                                                // Otherwise show a file icon + link
+                                                                <div className={styles.fileLink}>
+                                                                    <i className="fa-regular fa-file-lines"></i>
+                                                                    <a
+                                                                        href={response.fieldValue}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className={styles.link}
+                                                                    >
+                                                                        View File
+                                                                    </a>
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     ) : (
                                                         response.fieldValue
                                                     )}
+
                                                 </h5>
                                             </div>
                                         ))

@@ -62,10 +62,18 @@ const UserProjects = () => {
                                             <div className={styles.folderBody}>
                                                 <h2>{project.projectName}</h2>
                                             </div>
-                                            <div className={styles.statusContainer}>
+                                            <div className={`${styles.statusContainer}`}>
                                                 <span className={styles.statusDot} style={{ backgroundColor: getStatusColor(project.status) }}></span>
                                                 <span>{project.status}</span>
                                             </div>
+
+{
+    project.unreadMessageCount === 0 ? "" : (
+        <div className={`${styles.unreadMessage}`}>{project.unreadMessageCount}</div>
+    )
+}
+
+
                                         </motion.div>
                                     ))}
 

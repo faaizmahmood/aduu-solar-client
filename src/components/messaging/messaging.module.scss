@@ -1,16 +1,133 @@
 .messaging {
-    height: 400px;
+    height: 500px;
     padding: 10px 10px 0px 10px;
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     border-radius: 10px;
-
     display: flex;
     flex-direction: column;
+    position: relative;
+    // overflow-y: scroll;
+
+
+
 
     .chatBox {
         flex: 1; // Take up remaining space
-        overflow-y: auto; // Allow scrolling if content overflows
+        height: 385px;
+        overflow-y: scroll;
         margin-bottom: 10px; // Optional space above the input
+        flex-direction: column;
+        position: relative;
+
+
+
+        // side bar
+
+        .sidebarToggle {
+            position: fixed;
+            top: 0px;
+            right: 10px !important;
+            cursor: pointer;
+        }
+
+
+        .message {
+            margin: 15px 0;
+            padding: 10px 10px;
+            border-radius: 8px;
+            max-width: 40%;
+            word-break: break-word;
+
+            .unreadMessage {
+                border-left: 4px solid #dc3545; // red line indicator
+                background-color: #fff8f8; // slightly pinkish bg
+            }
+
+
+            .messageMeta {
+                .date {
+                    font-size: 12px;
+                    margin-top: 8px;
+                }
+            }
+
+            p {
+                margin: 0px !important;
+            }
+
+            &.myMessage {
+                background-color: var(--primary-color);
+                align-self: flex-end;
+                margin-left: auto;
+                text-align: right;
+                color: white;
+            }
+
+            &.otherMessage {
+                background-color: #e0e0e0;
+                align-self: flex-start;
+                margin-right: auto;
+                text-align: left;
+            }
+
+
+            .mediaPreview {
+                margin-top: 8px;
+            }
+
+            .imageThumb {
+                max-width: 150px;
+                max-height: 150px;
+                border-radius: 10px;
+                object-fit: cover;
+            }
+
+            .videoThumb {
+                max-width: 200px;
+                max-height: 200px;
+                border-radius: 10px;
+            }
+
+            .fileDownload {
+                background-color: #eee;
+                padding: 6px 10px;
+                border-radius: 8px;
+                display: inline-block;
+                font-size: 0.9rem;
+                color: #333;
+                text-decoration: none;
+            }
+        }
+
+
+        .dateSeparator {
+            text-align: center;
+            margin: 1rem 0;
+            color: #888;
+            font-size: 0.85rem;
+            position: relative;
+        }
+
+        .dateSeparator span {
+            background: #f1f1f1;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+            border-radius: 3px;
+        }
+
+        .dateSeparator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #ccc;
+            z-index: 0;
+        }
+
+
     }
 
     .inputRow {
@@ -35,7 +152,7 @@
             width: 100%;
         }
 
-        input:not([type="checkbox"]):not([type="radio"]):not([type="file"]){
+        input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
             padding: 0px !important;
         }
 
@@ -94,6 +211,29 @@
                     }
                 }
             }
+        }
+
+        .messagingActions {
+            position: relative;
+
+            .emojiPicker {
+                position: absolute;
+                bottom: 100%;
+                /* Position it above the input */
+                left: 0;
+                transform: translateY(-10px);
+                /* Adjusts the vertical position */
+                z-index: 9999;
+                /* Ensure it stays on top of other elements */
+                background-color: white;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                padding: 10px;
+                max-width: 300px;
+                /* You can adjust this depending on the size you want */
+                width: 100%;
+            }
+
         }
 
 

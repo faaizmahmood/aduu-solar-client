@@ -19,7 +19,6 @@ const ManageTeam = () => {
         setShowPassword,
         showPassword,
         loading,
-        fetching
     } = useManageTeam();
 
     return (
@@ -55,7 +54,7 @@ const ManageTeam = () => {
 
                     <div className={styles.dataGrid}>
                         <Box sx={{ height: 400, width: "100%" }}>
-                            {fetching ? (
+                            {loading ? (
                                 <div className="text-center mt-4">
                                     <BeatLoader color="#36d7b7" />
                                 </div>

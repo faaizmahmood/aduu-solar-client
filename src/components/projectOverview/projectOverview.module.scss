@@ -1,5 +1,24 @@
 .projectOverview {
 
+    .filePreview {
+        margin-top: 0.5rem;
+    }
+    
+    .imagePreview {
+        max-width: 300px;
+        max-height: 200px;
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .fileLink {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #007bff;
+    }
+    
+
 
     .orderedServiceList {
 

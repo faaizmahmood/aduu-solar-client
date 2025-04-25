@@ -12,7 +12,8 @@ const ProjectDetails = () => {
 
             <section className={`${styles.projectDetails}`}>
                 {currentUser?.role === "Admin" && <AdminProjectDetails />}
-                {currentUser?.role === "staff" || currentUser?.role === "client" && <UserProjectDetails />}
+                {currentUser?.role === "client" && <UserProjectDetails />}
+                {currentUser?.role === "staff" && <UserProjectDetails />}
             </section>
 
         </>

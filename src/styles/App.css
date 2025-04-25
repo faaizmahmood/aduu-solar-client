@@ -202,3 +202,19 @@ h5 {
 :global(.dropdown-item:focus) {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
+
+
+
+/* --------------
+--------- unauthorized */
+
+
+.unauthorized{
+
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}

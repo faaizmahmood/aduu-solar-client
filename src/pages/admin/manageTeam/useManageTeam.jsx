@@ -18,14 +18,14 @@ const useManageTeam = () => {
 
                 // Transform API response to match DataGrid format
                 const formattedStaff = response.data.staff.map((staff) => ({
-                    id: staff._id, // Use MongoDB ID as unique identifier
+                    id: staff._id,
                     name: staff.name,
-                    role: staff.workingRole || "Not Assigned", // Handle null role
+                    role: staff.role || "Not Assigned",
                     email: staff.email,
                     phone: staff.phone,
                     status: staff.status,
-                    projectsAssigned: staff.projectsAssigned.length || 0, // Fixed typo
-                    dateAdded: new Date(staff.createdAt).toISOString().split("T")[0], // Format date
+                    projectsAssigned: staff.projectsAssigned?.length || 0, 
+                    dateAdded: new Date(staff.createdAt).toISOString().split("T")[0], 
                 }));
 
                 setStaffData(formattedStaff);
@@ -93,9 +93,10 @@ const useManageTeam = () => {
 
     const filteredRows = staffData.filter((row) =>
         Object.values(row).some((value) =>
-            value.toString().toLowerCase().includes(search.toLowerCase())
+            String(value || "").toLowerCase().includes(search.toLowerCase())
         )
     );
+
 
     return {
         closeModal,
