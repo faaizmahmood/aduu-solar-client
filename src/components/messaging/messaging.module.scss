@@ -19,6 +19,23 @@
         flex-direction: column;
         position: relative;
 
+        .noMessageDetails{
+
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            
+        .noMessageImg{
+
+            width: 100px;
+        }
+
+        }
+
+
 
 
         // side bar

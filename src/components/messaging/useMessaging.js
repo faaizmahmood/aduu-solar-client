@@ -5,6 +5,9 @@ import s3UploadFile from "../../utils/s3Upload";// make sure this path is correc
 import apiService from '../../utils/apiClient'
 
 const useMessaging = (projectId, user) => {
+
+    const [loading, setLoading] = useState(false)
+
     const [messages, setMessages] = useState([]);
 
     const [newMsg, setNewMsg] = useState("");
@@ -47,10 +50,13 @@ const useMessaging = (projectId, user) => {
 
         const fetchMessages = async () => {
             try {
+                setLoading(true)
                 const res = await apiService.get(`/message/${projectId}`);
                 setMessages(res.data || []); // depends on your response format
             } catch (error) {
                 console.error("Failed to fetch messages:", error);
+            } finally{
+                setLoading(false)
             }
         };
 
@@ -164,6 +170,7 @@ const useMessaging = (projectId, user) => {
     };
 
     return {
+        loading,
         messages,
         newMsg,
         setNewMsg,

@@ -5,6 +5,8 @@ import EmojiPicker from "emoji-picker-react";
 import useMessaging from "./useMessaging.js";
 import styles from './messaging.module.scss';
 import groupMessagesByDate from "../../utils/groupMessagesByDate.js";
+import Loading from '../../components/loading/loading'
+import noMessageImg from '../../assets/no_message_img.png'
 
 const Messaging = () => {
 
@@ -21,6 +23,7 @@ const Messaging = () => {
     const lastReadAt = findProjectLastReadMessages?.lastReadAt;
 
     const {
+        loading,
         messages,
         newMsg,
         setNewMsg,
@@ -49,75 +52,86 @@ const Messaging = () => {
             <div className={styles.chatBox} >
 
                 {
-                    messages.length === 0 ? (
+                    loading ? <Loading /> : (
                         <>
-                            <h3>No message</h3>
-                        </>
-                    ) : (
-                        <>
-                            {Object.entries(groupedMessages).map(([date, msgs], i) => (
-                                <div key={i}>
-                                    <div className={styles.dateSeparator}>
-                                        <span>{date}</span>
-                                    </div>
+                            {
+                                messages.length === 0 ? (
+                                    <>
+                                        <div className={`${styles.noMessageDetails}`}>
+                                            <img src={noMessageImg} className={styles.noMessageImg} alt="No message Founds" />
+                                            <h3>No messages Found</h3>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        {Object.entries(groupedMessages).map(([date, msgs], i) => (
+                                            <div key={i}>
+                                                <div className={styles.dateSeparator}>
+                                                    <span>{date}</span>
+                                                </div>
 
-                                    {msgs.map((msg, index) => {
+                                                {msgs.map((msg, index) => {
 
-                                        const isMine = msg.senderId === user._id;
-                                        const isUnread = !isMine && lastReadAt && new Date(msg.createdAt) > new Date(lastReadAt);
+                                                    const isMine = msg.senderId === user._id;
+                                                    const isUnread = !isMine && lastReadAt && new Date(msg.createdAt) > new Date(lastReadAt);
 
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={`${styles.message} ${isMine ? styles.myMessage : styles.otherMessage} ${isUnread ? styles.unreadMessage : ""}`}
+                                                    return (
+                                                        <div
+                                                            key={index}
+                                                            className={`${styles.message} ${isMine ? styles.myMessage : styles.otherMessage} ${isUnread ? styles.unreadMessage : ""}`}
 
-                                            >
-                                                <h5>{msg.senderName} {isMine ? "(You)" : ""}</h5>
-                                                {!isMine && <strong>{msg.sender}</strong>}
-                                                <p>{msg.text}</p>
+                                                        >
+                                                            <h5>{msg.senderName} {isMine ? "(You)" : ""}</h5>
+                                                            {!isMine && <strong>{msg.sender}</strong>}
+                                                            <p>{msg.text}</p>
 
-                                                {/* File preview */}
-                                                {msg.file && (
-                                                    <div className={styles.mediaPreview}>
-                                                        {msg.file.match(/\.(jpeg|jpg|png|gif)$/i) ? (
-                                                            <a href={msg.file} target="_blank" rel="noreferrer">
-                                                                <img src={msg.file} alt="file" className={styles.imageThumb} />
-                                                            </a>
-                                                        ) : msg.file.match(/\.(mp4|webm|ogg)$/i) ? (
-                                                            <a href={msg.file} target="_blank" rel="noreferrer">
-                                                                <video src={msg.file} className={styles.videoThumb} controls />
-                                                            </a>
-                                                        ) : (
-                                                            <a href={msg.file} target="_blank" rel="noreferrer">
-                                                                <div className={styles.fileDownload}>📎 View File</div>
-                                                            </a>
-                                                        )}
-                                                    </div>
-                                                )}
+                                                            {/* File preview */}
+                                                            {msg.file && (
+                                                                <div className={styles.mediaPreview}>
+                                                                    {msg.file.match(/\.(jpeg|jpg|png|gif)$/i) ? (
+                                                                        <a href={msg.file} target="_blank" rel="noreferrer">
+                                                                            <img src={msg.file} alt="file" className={styles.imageThumb} />
+                                                                        </a>
+                                                                    ) : msg.file.match(/\.(mp4|webm|ogg)$/i) ? (
+                                                                        <a href={msg.file} target="_blank" rel="noreferrer">
+                                                                            <video src={msg.file} className={styles.videoThumb} controls />
+                                                                        </a>
+                                                                    ) : (
+                                                                        <a href={msg.file} target="_blank" rel="noreferrer">
+                                                                            <div className={styles.fileDownload}>📎 View File</div>
+                                                                        </a>
+                                                                    )}
+                                                                </div>
+                                                            )}
 
-                                                <small className={styles.messageMeta}>
-                                                    <div className={styles.date}>
-                                                        {new Date(msg.createdAt).toLocaleTimeString([], {
-                                                            hour: '2-digit',
-                                                            minute: '2-digit',
-                                                        })}
-                                                    </div>
+                                                            <small className={styles.messageMeta}>
+                                                                <div className={styles.date}>
+                                                                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                                                                        hour: '2-digit',
+                                                                        minute: '2-digit',
+                                                                    })}
+                                                                </div>
 
-                                                    {isMine && msg.status === "sending" && <span className={styles.status}>⏳</span>}
-                                                    {isMine && msg.status === "failed" && (
-                                                        <span className={styles.status} onClick={() => retryMessage(msg)}>❌ Retry</span>
-                                                    )}
-                                                </small>
+                                                                {isMine && msg.status === "sending" && <span className={styles.status}>⏳</span>}
+                                                                {isMine && msg.status === "failed" && (
+                                                                    <span className={styles.status} onClick={() => retryMessage(msg)}>❌ Retry</span>
+                                                                )}
+                                                            </small>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            ))}
-                            <div ref={bottomRef} />
+                                        ))}
+                                        <div ref={bottomRef} />
 
+                                    </>
+                                )
+                            }
                         </>
                     )
                 }
+
+
 
 
             </div>
