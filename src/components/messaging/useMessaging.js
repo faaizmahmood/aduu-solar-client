@@ -10,6 +10,10 @@ const useMessaging = (projectId, user) => {
 
     const [messages, setMessages] = useState([]);
 
+    const [projectDetails, setProjectDetails] = useState([]);
+
+    const [files, setFiles] = useState([]);
+
     const [newMsg, setNewMsg] = useState("");
 
     const [uploading, setUploading] = useState(false);
@@ -23,6 +27,10 @@ const useMessaging = (projectId, user) => {
     const fileInputRef = useRef(null);
 
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+    const [mention, setMention] = useState(false)
+
+    const [mentionedPersons, setMentionedPersons] = useState([])
 
     // Emit 'updateLastReadMessage' when a new message arrives or when user scrolls to bottom
     useEffect(() => {
@@ -52,10 +60,12 @@ const useMessaging = (projectId, user) => {
             try {
                 setLoading(true)
                 const res = await apiService.get(`/message/${projectId}`);
-                setMessages(res.data || []); // depends on your response format
+                setMessages(res.data.messages || []);
+                setProjectDetails(res.data.project || []);
+                setFiles(res.data.files || []);
             } catch (error) {
                 console.error("Failed to fetch messages:", error);
-            } finally{
+            } finally {
                 setLoading(false)
             }
         };
@@ -108,6 +118,7 @@ const useMessaging = (projectId, user) => {
             senderId: user._id,
             text: newMsg,
             file: fileUrl,
+            mentions: mentionedPersons,
             projectId,
             createdAt: new Date().toISOString(),
             status: 'sending',
@@ -120,6 +131,7 @@ const useMessaging = (projectId, user) => {
         setNewMsg("");
         setFileUrl(null);
         setFileName("");
+        setMentionedPersons([]); 
 
         // Emit to server
         socket.emit("sendMessage", msgData, (ack) => {
@@ -160,13 +172,27 @@ const useMessaging = (projectId, user) => {
     };
 
 
-
     const handleEmojiClick = (emojiData) => {
         setNewMsg((prev) => prev + emojiData.emoji);
     };
 
     const handleFileIconClick = () => {
         if (fileInputRef.current) fileInputRef.current.click();
+    };
+
+    const handelMentionClick = () => {
+        setMention(!mention)
+    }
+
+    const handelMentionPersonClick = (name) => {
+        if (!mentionedPersons.includes(name)) { // Avoid duplicate mentions
+            setMentionedPersons(prev => [...prev, name]);
+        }
+        setMention(false);
+    }
+
+    const handleRemoveMention = (name) => {
+        setMentionedPersons(prev => prev.filter(person => person !== name));
     };
 
     return {
@@ -186,7 +212,14 @@ const useMessaging = (projectId, user) => {
         handleEmojiClick,
         showEmojiPicker,
         setShowEmojiPicker,
-        retryMessage
+        retryMessage,
+        projectDetails,
+        files,
+        handelMentionClick,
+        mention,
+        handelMentionPersonClick,
+        mentionedPersons,
+        handleRemoveMention
     };
 };
 
